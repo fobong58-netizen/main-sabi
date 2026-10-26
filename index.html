@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sabi | find skilled workers in Port Harcourt</title>
+    <meta name="description" content="Find plumbers, electricians, welders, tailors and mechanics in Port Harcourt. Call or WhatsApp them directly.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="nav-bar">
+            <h1 class="logo">sabi</h1>
+            <div class="nav-sub">
+                <a href="/index.html"><button>find a service</button></a>
+                <button>jobs</button>
+                <a href="/listed.html"><button>get listed</button></a>
+                <button>post a job</button>
+            </div>
+        </nav>
+        <div class="main-con">
+            <div class="con1">
+                <h1>find who sabi the work.</h1>
+                <h3>Plumbers, electricians, welders, tailors and mechanics in Port Harcourt. Find the right person, then call or WhatsApp them directly.</h3>
+                <div class="links">
+                    <a class="link" href="/listed.html">Have a skill? Get listed free.</a>
+                </div>
+            </div>
+            <div class="con2">
+                <form id="find">
+                    <label for="trade">What do you need?</label>
+                    <select id="trade">
+                        <option>Any trade</option>
+                        <option>Plumber</option>
+                        <option>Electrician</option>
+                        <option>Carpenter</option>
+                        <option>Painter</option>
+                        <option>Mason</option>
+                        <option>Tiler</option>
+                        <option>Welder</option>
+                        <option>Tailor</option>
+                        <option>AC technician</option>
+                        <option>Mechanic</option>
+                    </select>
+                    <label for="area">Where?</label>
+                    <select id="area">
+                        <option>Anywhere in Port Harcourt</option>
+                        <option>Rumuokoro</option>
+                        <option>Rumuola</option>
+                        <option>Rumuigbo</option>
+                        <option>Eliozu</option>
+                        <option>Diobu</option>
+                        <option>GRA</option>
+                        <option>Trans Amadi</option>
+                        <option>Mile 1</option>
+                        <option>Mile 3</option>
+                        <option>Ada George</option>
+                        <option>Woji</option>
+                        <option>Choba</option>
+                    </select>
+                    <label for="skill">Name or skill <span>(optional)</span></label>
+                    <input type="text" id="skill" placeholder="e.g. borehole, gate, native wear">
+                    <button class="look" type="submit">Find workers</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <main class="profile-space">
+        <div class="results-bar">
+            <h2 id="count">Workers</h2>
+            <div class="sort">
+                <label for="sort">Sort by</label>
+                <select id="sort">
+                    <option value="newest">Newest</option>
+                    <option value="experience">Most experience</option>
+                </select>
+            </div>
+        </div>
+        <div id="results" class="cards"></div>
+    </main>
+
+    <footer>
+        <p>sabi | Skilled workers in Port Harcourt</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

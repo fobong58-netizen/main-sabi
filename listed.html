@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>get listed | sabi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/listed.css">
+</head>
+<body>
+    <header>
+        <nav class="nav-bar">
+            <h1 class="logo">sabi</h1>
+            <div class="nav-sub">
+                <a href="/index.html">
+                    <button>find a service</button>
+                </a>
+                <button>jobs</button>
+                <a href="/listed.html">
+                    <button>get listed</button>
+                </a>
+                <button>post a job</button>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="top-text">
+            <h1>Get listed and get found</h1>
+            <p>Create one profile. Customers can book you for services and employers can find you for jobs. It is free.</p>
+        </div>
+        <div class="con">
+            <form class="card" id="listed-form" action="#" method="post">
+                <div class="field">
+                    <label for="full-name">Full name</label>
+                    <input type="text" id="full-name" name="full_name" autocomplete="name" maxlength="60" required>
+                </div>
+                <div class="row-2">
+                    <div class="field">
+                        <label for="trade">Your trade</label>
+                        <select id="trade" name="trade" required>
+                            <option value="" selected disabled>Choose your trade</option>
+                            <option>Plumber</option>
+                            <option>Electrician</option>
+                            <option>Carpenter</option>
+                            <option>Painter</option>
+                            <option>Mason</option>
+                            <option>Tiler</option>
+                            <option>Welder</option>
+                            <option>Tailor</option>
+                            <option>AC technician</option>
+                            <option>Mechanic</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="area">Area you work in</label>
+                        <select id="area" name="area" required>
+                            <option value="" selected disabled>Choose an area</option>
+                            <option>Rumuokoro</option>
+                            <option>Rumuola</option>
+                            <option>Rumuigbo</option>
+                            <option>Eliozu</option>
+                            <option>Diobu</option>
+                            <option>GRA</option>
+                            <option>Trans Amadi</option>
+                            <option>Mile 1</option>
+                            <option>Mile 3</option>
+                            <option>Ada George</option>
+                            <option>Woji</option>
+                            <option>Choba</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="call">
+                        <label for="phone">Phone number (WhatsApp)</label>
+                        <input type="tel" id="phone" name="phone" placeholder="08012345678" autocomplete="tel" inputmode="tel" pattern="(0|\+?234)[789][01][0-9]{8}" title="Enter a valid Nigerian number, e.g. 08012345678" required>
+                        <p class="hint">We will check this number before we show the Verified badge on your profile.</p>
+                    </div>
+                    <div class="call">
+                        <label for="phone-call">Phone number (call)</label>
+                        <input type="tel" id="phone-call" name="phone_call" placeholder="08012345678" inputmode="tel" pattern="(0|\+?234)[789][01][0-9]{8}" title="Enter a valid Nigerian number, e.g. 08012345678">
+                    </div>
+                </div>
+                <div class="row row-3">
+                    <div class="field">
+                        <label for="experience">Years of experience</label>
+                        <input type="number" id="experience" name="experience" placeholder="5" min="0" max="60" inputmode="numeric" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="skills">What can you do?</label>
+                    <input type="text" id="skills" name="skills" placeholder="Leak repairs, tank fitting, borehole plumbing" required>
+                    <p class="hint">Separate each skill with a comma. Add up to 6.</p>
+                </div>
+                <div class="field-work">
+                    <label for="about">About your work <span class="optional">(optional)</span></label>
+                    <textarea id="about" name="about" rows="5" maxlength="400" placeholder="Tell customers what you are good at and how you work."></textarea>
+                </div>
+                <div class="consent">
+                    <input type="checkbox" id="consent" name="consent" required>
+                    <label for="consent">I agree that customers and employers can contact me on this number.</label>
+                </div>
+                <p id="msg" class="msg" role="status"></p>
+                <button type="submit" class="submit-btn">Create my profile</button>
+            </form>
+        </div>
+    </main>
+    <script src="listed.js"></script>
+</body>
+</html>

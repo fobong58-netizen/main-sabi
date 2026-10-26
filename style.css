@@ -1,0 +1,466 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --blue: #15235e;
+    --blue-deep: #0e1941;
+    --sun: #ffc20e;
+    --paper: #f4f5fa;
+    --white: #ffffff;
+    --text: #17192b;
+    --muted: #565b73;
+    --line: #d9dcea;
+    --green: #0b6e44;
+    --green-bg: #dcf3e7;
+    --amber: #6b4b00;
+    --amber-bg: #fff0c2;
+    --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --font-body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+body{
+    font-family: var(--font-body);
+    line-height: 1.55;
+    color: var(--text);
+    background-color: var(--paper);
+}
+
+:focus-visible{
+    outline: 3px solid #1a6bff;
+    outline-offset: 2px;
+}
+
+/* ---------- Header / nav ---------- */
+header{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--blue);
+    padding: 80px 5% 56px;
+}
+
+.nav-bar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--blue);
+    width: 100%;
+    height: 80px;
+    padding: 0 5%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20;
+}
+
+.logo{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.7rem;
+    letter-spacing: -0.02em;
+    color: var(--sun);
+}
+
+.nav-sub{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-sub a{
+    text-decoration: none;
+}
+
+.nav-sub button{
+    font: inherit;
+    font-weight: 500;
+    color: white;
+    background-color: transparent;
+    border: none;
+    border-radius: 30px;
+    height: 38px;
+    padding: 0 16px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.nav-sub button:hover{
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+/* current page */
+.nav-sub a[href="/index.html"] button{
+    background-color: var(--sun);
+    color: var(--blue-deep);
+    font-weight: 600;
+}
+
+/* ---------- Hero ---------- */
+.main-con{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    padding-top: 48px;
+}
+
+.con1{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    color: white;
+    width: 52%;
+}
+
+.con1 h1{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.3rem, 5.4vw, 4rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    max-width: 14ch;
+}
+
+.con1 h3{
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: #dfe3f7;
+    max-width: 46ch;
+}
+
+.links{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.link{
+    color: var(--sun);
+    font-weight: 500;
+}
+
+/* the signboard */
+.con2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--sun);
+    color: var(--blue-deep);
+    border: 4px solid var(--blue-deep);
+    border-radius: 14px;
+    box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.3);
+    padding: 22px;
+    width: 440px;
+}
+
+#find{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+#find label{
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+#find label span{
+    font-weight: 400;
+    color: #4a3d00;
+}
+
+#trade, #area, #skill{
+    font: inherit;
+    color: var(--text);
+    background-color: white;
+    border: solid 1.5px var(--blue-deep);
+    border-radius: 8px;
+    height: 46px;
+    width: 100%;
+    padding: 0 12px;
+    margin-bottom: 6px;
+}
+
+.look{
+    font: inherit;
+    font-weight: 600;
+    height: 46px;
+    width: 100%;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--blue-deep);
+    color: white;
+    cursor: pointer;
+}
+
+.look:hover{
+    background-color: black;
+}
+
+/* ---------- Results ---------- */
+.profile-space{
+    width: min(1120px, 100% - 32px);
+    margin: 0 auto;
+    padding: 36px 0 64px;
+}
+
+.results-bar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.results-bar h2{
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+}
+
+.sort{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sort label{
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.sort select{
+    font: inherit;
+    background-color: white;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    height: 42px;
+    padding: 0 10px;
+}
+
+.cards{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.card-head{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar{
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-weight: 800;
+    color: white;
+}
+
+.card-id{
+    flex: 1;
+    min-width: 0;
+}
+
+.card-id h3{
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    overflow-wrap: anywhere;
+}
+
+.sub{
+    color: var(--muted);
+    font-size: 0.93rem;
+}
+
+.badge{
+    flex: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+.badge.ok{
+    background-color: var(--green-bg);
+    color: var(--green);
+}
+
+.badge.pending{
+    background-color: var(--amber-bg);
+    color: var(--amber);
+}
+
+.star{
+    color: #b07a00;
+    font-weight: 600;
+}
+
+.muted{
+    color: var(--muted);
+}
+
+.chips{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+}
+
+.chips li{
+    background-color: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-size: 0.88rem;
+}
+
+.actions{
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.actions a{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.call-btn{
+    background-color: white;
+    color: var(--blue);
+    border: 2px solid var(--blue);
+}
+
+.call-btn:hover{
+    background-color: #eef0fb;
+}
+
+.wa-btn{
+    background-color: #137c3f;
+    color: white;
+    border: 2px solid #137c3f;
+}
+
+.wa-btn:hover{
+    background-color: #0d5f2f;
+}
+
+.empty{
+    grid-column: 1 / -1;
+    background-color: white;
+    border: 2px dashed var(--line);
+    border-radius: 10px;
+    padding: 32px 20px;
+    text-align: center;
+    color: var(--muted);
+}
+
+/* ---------- Footer ---------- */
+footer{
+    background-color: var(--blue-deep);
+    color: #c9cfee;
+    padding: 24px 5%;
+    font-size: 0.92rem;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 860px){
+    .main-con{
+        flex-direction: column;
+        align-items: stretch;
+        padding-top: 28px;
+    }
+
+    .con1{
+        width: 100%;
+    }
+
+    .con2{
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px){
+    .nav-bar{
+        padding: 0 3%;
+    }
+
+    .nav-sub{
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .nav-sub button{
+        padding: 0 10px;
+        font-size: 0.9rem;
+    }
+
+    .logo{
+        font-size: 1.4rem;
+    }
+
+    .cards{
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Added: real listing details ---------- */
+.about{
+    color: var(--muted);
+    font-size: 0.93rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.empty h3{
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.empty-link{
+    display: inline-block;
+    margin-top: 14px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: var(--blue);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.empty-link:hover{
+    background-color: var(--blue-deep);
+}
