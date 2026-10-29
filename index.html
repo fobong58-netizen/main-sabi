@@ -14,7 +14,12 @@
     <header>
         <nav class="nav-bar">
             <h1 class="logo">sabi</h1>
-            <div class="nav-sub">
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <div class="nav-sub" id="navMenu">
                 <a href="/index.html"><button>find a service</button></a>
                 <button>jobs</button>
                 <a href="/listed.html"><button>get listed</button></a>
@@ -94,6 +99,7 @@
         <p>sabi | Skilled workers in Port Harcourt</p>
     </footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="nav.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
