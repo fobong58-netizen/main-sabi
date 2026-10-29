@@ -246,7 +246,7 @@ header{
 
 .cards{
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
     gap: 16px;
 }
 
@@ -348,7 +348,7 @@ header{
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 40px;
+    min-height: 44px;
     border-radius: 8px;
     font-weight: 600;
     text-decoration: none;
@@ -384,41 +384,55 @@ header{
     color: var(--muted);
 }
 
-section{
+/* ---------- Call to action (artisan banner) ---------- */
+.cta{
     display: flex;
     flex-direction: column;
-    align-items: center;    
+    align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 14px;
     width: 100%;
-    height: 200px;
+    min-height: 200px;
+    padding: 40px 5%;
+    text-align: center;
     background-color: var(--blue);
     color: #c9cfee;
-    font-family: "Bricolage Grotesque";
-    border-bottom: 3px solid var(--sun);
     border-top: 3px solid var(--sun);
+    border-bottom: 3px solid var(--sun);
 }
 
-section h1{
-    font-weight: 700;
-    font-size: 40px;
+.cta h2{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.7rem, 6vw, 2.5rem);
+    line-height: 1.15;
+    color: white;
 }
 
+.cta p{
+    font-size: clamp(1rem, 3.5vw, 1.1rem);
+    max-width: 40ch;
+}
 
 .create{
-    background-color: var(--sun);
-    border: none;
-    height: 40px;
-    width: 120px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 24px;
     border-radius: 10px;
+    background-color: var(--sun);
+    color: var(--blue-deep);
     font-family: var(--font-display);
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
 .create:hover{
-    transform: scale(1.1);
-    background-color: rgba(219, 180, 7, 0.909);
+    transform: scale(1.06);
+    background-color: #e6ac00;
 }
 
 /* ---------- Footer ---------- */
@@ -427,47 +441,6 @@ footer{
     color: #c9cfee;
     padding: 24px 5%;
     font-size: 0.92rem;
-}
-
-/* ---------- Mobile ---------- */
-@media (max-width: 860px){
-    .main-con{
-        flex-direction: column;
-        align-items: stretch;
-        padding-top: 28px;
-    }
-
-    .con1{
-        width: 100%;
-    }
-
-    .con2{
-        width: 100%;
-    }
-}
-
-@media (max-width: 600px){
-    .nav-bar{
-        padding: 0 3%;
-    }
-
-    .nav-sub{
-        overflow-x: auto;
-        scrollbar-width: none;
-    }
-
-    .nav-sub button{
-        padding: 0 10px;
-        font-size: 0.9rem;
-    }
-
-    .logo{
-        font-size: 1.4rem;
-    }
-
-    .cards{
-        grid-template-columns: 1fr;
-    }
 }
 
 /* ---------- Added: real listing details ---------- */
@@ -500,4 +473,123 @@ footer{
 
 .empty-link:hover{
     background-color: var(--blue-deep);
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 860px){
+    header{
+        padding-bottom: 40px;
+    }
+
+    .main-con{
+        flex-direction: column;
+        align-items: stretch;
+        gap: 28px;
+        padding-top: 28px;
+    }
+
+    .con1{
+        width: 100%;
+    }
+
+    .con1 h1{
+        max-width: none;
+    }
+
+    .con2{
+        width: 100%;
+    }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 600px){
+    header{
+        padding: 80px 4% 32px;
+    }
+
+    .nav-bar{
+        padding: 0 4%;
+        gap: 8px;
+    }
+
+    .logo{
+        font-size: 1.4rem;
+    }
+
+    .nav-sub{
+        overflow-x: auto;
+        scrollbar-width: none;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    .nav-sub::-webkit-scrollbar{
+        display: none;
+    }
+
+    .nav-sub button{
+        padding: 0 10px;
+        font-size: 0.9rem;
+    }
+
+    .con1 h3{
+        font-size: 1rem;
+    }
+
+    .con2{
+        padding: 16px;
+        border-width: 3px;
+        box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    /* 16px stops iOS from zooming into the form fields */
+    #trade, #area, #skill{
+        font-size: 16px;
+    }
+
+    .profile-space{
+        padding: 28px 0 48px;
+    }
+
+    .results-bar{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .sort{
+        width: 100%;
+    }
+
+    .sort select{
+        flex: 1;
+        font-size: 16px;
+    }
+
+    .cards{
+        grid-template-columns: 1fr;
+    }
+
+    .card{
+        padding: 16px;
+    }
+
+    .cta{
+        padding: 36px 6%;
+        gap: 12px;
+    }
+
+    .create{
+        width: 100%;
+        max-width: 320px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .create{
+        transition: none;
+    }
+    .create:hover{
+        transform: none;
+    }
 }
