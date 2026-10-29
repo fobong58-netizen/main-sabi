@@ -384,6 +384,43 @@ header{
     color: var(--muted);
 }
 
+section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    height: 200px;
+    background-color: var(--blue);
+    color: #c9cfee;
+    font-family: "Bricolage Grotesque";
+    border-bottom: 3px solid var(--sun);
+    border-top: 3px solid var(--sun);
+}
+
+section h1{
+    font-weight: 700;
+    font-size: 40px;
+}
+
+
+.create{
+    background-color: var(--sun);
+    border: none;
+    height: 40px;
+    width: 120px;
+    border-radius: 10px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.create:hover{
+    transform: scale(1.1);
+    background-color: rgba(219, 180, 7, 0.909);
+}
+
 /* ---------- Footer ---------- */
 footer{
     background-color: var(--blue-deep);
