@@ -13,12 +13,7 @@
     <header>
         <nav class="nav-bar">
             <h1 class="logo">sabi</h1>
-            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
-            <div class="nav-sub" id="navMenu">
+            <div class="nav-sub">
                 <a href="/index.html">
                     <button>find a service</button>
                 </a>
@@ -37,6 +32,14 @@
         </div>
         <div class="con">
             <form class="card" id="listed-form">
+                <div class="field">
+                    <label for="photo">Profile picture</label>
+                    <div class="photo-row">
+                        <div class="photo-preview" id="photo-preview" aria-hidden="true">No photo</div>
+                        <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/webp" required>
+                    </div>
+                    <p class="hint">Use a clear photo of your face. JPG, PNG or WebP, up to 10MB.</p>
+                </div>
                 <div class="field">
                     <label for="full-name">Full name</label>
                     <input type="text" id="full-name" name="full_name" autocomplete="name" maxlength="60" required>
@@ -113,7 +116,6 @@
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="nav.js"></script>
     <script src="listed.js"></script>
 </body>
 </html>

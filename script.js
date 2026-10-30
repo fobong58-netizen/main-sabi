@@ -44,6 +44,7 @@ async function getWorkers() {
             about: row.about || "",
             phone: row.phone || "",
             callPhone: row.call_phone || "",
+            photo: row.photo_url || "",
             verified: row.verified === true
         };
     });
@@ -106,12 +107,16 @@ function buildCard(worker, index) {
     const about = worker.about
         ? '<p class="about">' + escapeText(worker.about) + "</p>"
         : "";
+    const photoOk = worker.photo.indexOf("https://") === 0;
+    const avatarInner = photoOk
+        ? '<img src="' + worker.photo.replace(/"/g, "%22") + '" alt="" loading="lazy">'
+        : escapeText(getInitials(worker.name));
     const callNumber = worker.callPhone || worker.phone;
     const yearsText = worker.years === 1 ? "1 year" : worker.years + " years";
 
     return '<article class="card">' +
         '<div class="card-head">' +
-            '<div class="avatar" style="background-color:' + color + '">' + escapeText(getInitials(worker.name)) + '</div>' +
+            '<div class="avatar" style="background-color:' + color + '">' + avatarInner + '</div>' +
             '<div class="card-id">' +
                 '<h3>' + escapeText(worker.name) + '</h3>' +
                 '<p class="sub">' + escapeText(worker.trade) + ' in ' + escapeText(worker.area) + '</p>' +

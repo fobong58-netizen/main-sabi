@@ -7,6 +7,12 @@ const db = createClient(
 const form = document.getElementById("listed-form");
 const msg = document.getElementById("msg");
 const submitButton = form.querySelector('button[type="submit"]');
+const photoInput = document.getElementById("photo");
+const photoPreview = document.getElementById("photo-preview");
+
+const PHOTO_BUCKET = "profile-photos";
+const MAX_PHOTO_MB = 10;
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 // ---------- storage ----------
 // Profiles are saved in the Supabase "artisans" table, so every visitor can see them.
@@ -31,7 +37,68 @@ async function saveWorker(worker) {
     return error; // null when it worked
 }
 
+async function uploadPhoto(blob, phone) {
+    const path = phone + "-" + Date.now() + ".jpg";
+    const { error } = await db.storage
+        .from(PHOTO_BUCKET)
+        .upload(path, blob, { contentType: "image/jpeg", upsert: false });
+
+    if (error) {
+        console.error("Could not upload photo:", error.message);
+        return null;
+    }
+    return db.storage.from(PHOTO_BUCKET).getPublicUrl(path).data.publicUrl;
+}
+
 // ---------- helpers ----------
+// Shrinks the photo to max 600px and converts to JPEG, so uploads are fast on slow data.
+function compressPhoto(file) {
+    return new Promise(function (resolve) {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = function () {
+            const scale = Math.min(1, 600 / Math.max(img.width, img.height));
+            const canvas = document.createElement("canvas");
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+            URL.revokeObjectURL(url);
+            canvas.toBlob(function (blob) { resolve(blob); }, "image/jpeg", 0.85);
+        };
+        img.onerror = function () {
+            URL.revokeObjectURL(url);
+            resolve(null);
+        };
+        img.src = url;
+    });
+}
+
+function clearPhotoPreview() {
+    photoPreview.style.backgroundImage = "";
+    photoPreview.classList.remove("has-photo");
+}
+
+photoInput.addEventListener("change", function () {
+    const file = photoInput.files[0];
+    clearPhotoPreview();
+    if (!file) return;
+
+    if (ALLOWED_TYPES.indexOf(file.type) === -1) {
+        photoInput.value = "";
+        showMessage("Profile picture must be a JPG, PNG or WebP image.", true);
+        return;
+    }
+    if (file.size > MAX_PHOTO_MB * 1024 * 1024) {
+        photoInput.value = "";
+        showMessage("That picture is too big. Choose one under " + MAX_PHOTO_MB + "MB.", true);
+        return;
+    }
+    msg.textContent = "";
+    msg.className = "msg";
+    photoPreview.style.backgroundImage = "url(" + URL.createObjectURL(file) + ")";
+    photoPreview.classList.add("has-photo");
+});
+
 function digitsOnly(phone) {
     return phone.replace(/\D/g, "").replace(/^234/, "0");
 }
@@ -59,6 +126,12 @@ form.addEventListener("submit", async function (event) {
         return;
     }
 
+    const photoFile = photoInput.files[0];
+    if (!photoFile) {
+        showMessage("Add a profile picture.", true);
+        return;
+    }
+
     const phone = digitsOnly(form.phone.value);
     const years = Number(form.experience.value);
 
@@ -78,7 +151,17 @@ form.addEventListener("submit", async function (event) {
         return;
     }
 
+    showMessage("Uploading your picture...", false);
+    const photoBlob = await compressPhoto(photoFile);
+    const photoUrl = photoBlob ? await uploadPhoto(photoBlob, phone) : null;
+    if (!photoUrl) {
+        showMessage("Could not upload your picture. Try another photo or check your internet.", true);
+        submitButton.disabled = false;
+        return;
+    }
+
     const error = await saveWorker({
+        photo_url: photoUrl,
         name: form.full_name.value.trim(),
         trade: form.trade.value,
         area: form.area.value,
@@ -104,5 +187,6 @@ form.addEventListener("submit", async function (event) {
     }
 
     form.reset();
+    clearPhotoPreview();
     showMessage("Your profile is created. Customers can now find you on the find a service page.", false);
 });
