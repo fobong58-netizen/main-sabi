@@ -71,6 +71,14 @@ function whatsappNumber(phone) {
     return digits.startsWith("234") ? digits : "234" + digits.replace(/^0/, "");
 }
 
+function whatsappLink(worker) {
+    // "AC technician" keeps its capitals, other trades are lowercased: "a plumber", "an electrician"
+    const trade = /^AC\b/.test(worker.trade) ? worker.trade : worker.trade.toLowerCase();
+    const article = /^[aeiou]/i.test(worker.trade) ? "an" : "a";
+    const text = "Hello, I got your number from sabi. I need " + article + " " + trade + ".";
+    return "https://wa.me/" + whatsappNumber(worker.phone) + "?text=" + encodeURIComponent(text);
+}
+
 // ---------- filter + sort ----------
 function filterWorkers() {
     const trade = tradeSelect.selectedIndex === 0 ? "" : tradeSelect.value;
@@ -124,12 +132,13 @@ function buildCard(worker, index) {
             badge +
         '</div>' +
         '<p class="muted">' + yearsText + ' of experience</p>' +
+        ratingLine(worker.id) +
         '<ul class="chips">' + chips + '</ul>' +
         about +
         '<button type="button" class="view-btn" data-id="' + escapeText(String(worker.id)) + '" data-color="' + color + '">View profile</button>' +
         '<div class="actions">' +
-            '<a class="call-btn" href="tel:' + escapeText(callNumber) + '">Call</a>' +
-            '<a class="wa-btn" href="https://wa.me/' + whatsappNumber(worker.phone) + '" target="_blank" rel="noopener">WhatsApp</a>' +
+            '<a class="call-btn" data-contact="' + worker.id + '" href="tel:' + escapeText(callNumber) + '">Call</a>' +
+            '<a class="wa-btn" data-contact="' + worker.id + '" href="' + whatsappLink(worker) + '" target="_blank" rel="noopener">WhatsApp</a>' +
         '</div>' +
     '</article>';
 }
@@ -160,16 +169,18 @@ function openProfile(worker, color) {
             '<div class="pm-avatar" style="background-color:' + color + '">' + avatar + '</div>' +
             '<h3 class="pm-name">' + escapeText(worker.name) + '</h3>' +
             '<p class="sub">' + escapeText(worker.trade) + ' in ' + escapeText(worker.area) + '</p>' +
+            ratingLine(worker.id) +
             badge +
             '<p class="muted">' + yearsText + ' of experience</p>' +
         '</div>' +
         '<div class="pm-section"><h4>Skills</h4><ul class="chips">' + chips + '</ul></div>' +
         about +
         '<div class="actions">' +
-            '<a class="call-btn" href="tel:' + escapeText(callNumber) + '">Call</a>' +
-            '<a class="wa-btn" href="https://wa.me/' + whatsappNumber(worker.phone) + '" target="_blank" rel="noopener">WhatsApp</a>' +
+            '<a class="call-btn" data-contact="' + worker.id + '" href="tel:' + escapeText(callNumber) + '">Call</a>' +
+            '<a class="wa-btn" data-contact="' + worker.id + '" href="' + whatsappLink(worker) + '" target="_blank" rel="noopener">WhatsApp</a>' +
         '</div>';
 
+    renderReviewSection(worker);
     profileModal.showModal();
 }
 
@@ -221,6 +232,7 @@ async function loadAndShow() {
     }
 
     allWorkers = workers;
+    await loadRatings();
     showWorkers();
 }
 

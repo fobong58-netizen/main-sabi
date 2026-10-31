@@ -750,3 +750,125 @@ body:has(.profile-modal[open]){
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
+
+/* ---------- Reviews (paste at the bottom of style.css) ---------- */
+.rating{
+    font-size: 0.95rem;
+}
+
+.hint-text{
+    color: var(--muted);
+    font-size: 0.93rem;
+}
+
+.review-form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    margin: 8px 0 14px;
+    background-color: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+}
+
+.rf-title{
+    font-weight: 600;
+}
+
+.review-form input[type="text"],
+.review-form textarea{
+    font: inherit;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    background-color: white;
+}
+
+.review-form textarea{
+    resize: vertical;
+}
+
+/* star picker: radios are in order 5..1 and shown reversed, so hover fills left to right */
+.star-input{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 2px;
+}
+
+.star-input input{
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.star-input label{
+    font-size: 2rem;
+    line-height: 1;
+    color: #c9ccdc;
+    cursor: pointer;
+}
+
+.star-input input:checked ~ label,
+.star-input label:hover,
+.star-input label:hover ~ label{
+    color: #e0a100;
+}
+
+.star-input input:focus-visible + label{
+    outline: 3px solid #1a6bff;
+    border-radius: 4px;
+}
+
+.review-form .msg:empty{
+    display: none;
+}
+
+.review-form .msg{
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.review-form .msg.error{
+    background: #fdecea;
+    color: #b3261e;
+}
+
+.review-form .msg.success{
+    background: #dcf3e7;
+    color: #0b6e44;
+}
+
+.review-list{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.review{
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+}
+
+.review:last-child{
+    border-bottom: none;
+}
+
+.review-top{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.review p{
+    overflow-wrap: anywhere;
+}
+
+.review-date{
+    font-size: 0.85rem;
+}
