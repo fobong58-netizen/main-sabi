@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>post a job | sabi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/listed.css">
+    <link rel="stylesheet" href="/profile.css">
+    <link rel="stylesheet" href="/jobs.css">
+</head>
+<body class="page-post">
+    <header>
+        <nav class="nav-bar">
+            <h1 class="logo">sabi</h1>
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <div class="nav-sub" id="navMenu">
+                <a href="/index.html"><button>find a service</button></a>
+                <a href="/jobs.html"><button>jobs</button></a>
+                <a href="/listed.html"><button>get listed</button></a>
+                <a href="/profile.html"><button>my profile</button></a>
+                <a href="/post-job.html"><button>post a job</button></a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="top-text">
+            <h1>Post a job</h1>
+            <p>Tell skilled workers what you need. They will call or WhatsApp you directly. It is free and stays listed for 30 days.</p>
+        </div>
+        <div class="con">
+            <form class="card" id="job-form">
+                <div class="field">
+                    <label for="job-title">Job title</label>
+                    <input type="text" id="job-title" name="job_title" placeholder="e.g. Welder needed to fix a gate" maxlength="80" minlength="4" required>
+                </div>
+                <div class="row-2">
+                    <div class="field">
+                        <label for="trade">Trade needed</label>
+                        <select id="trade" name="trade" required>
+                            <option value="" selected disabled>Choose a trade</option>
+                            <option>Plumber</option>
+                            <option>Electrician</option>
+                            <option>Carpenter</option>
+                            <option>Painter</option>
+                            <option>Tiler</option>
+                            <option>Welder</option>
+                            <option>AC technician</option>
+                            <option>Mechanic</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="area">Where is the job?</label>
+                        <select id="area" name="area" required>
+                            <option value="" selected disabled>Choose an area</option>
+                            <option>Rumuokoro</option>
+                            <option>Rumuola</option>
+                            <option>Rumuigbo</option>
+                            <option>Eliozu</option>
+                            <option>Diobu</option>
+                            <option>GRA</option>
+                            <option>Trans Amadi</option>
+                            <option>Mile 1</option>
+                            <option>Mile 3</option>
+                            <option>Ada George</option>
+                            <option>Woji</option>
+                            <option>Choba</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row-2">
+                    <div class="field">
+                        <label for="job-type">Type of job</label>
+                        <select id="job-type" name="job_type" required>
+                            <option value="" selected disabled>Choose one</option>
+                            <option>One-off job</option>
+                            <option>Part-time</option>
+                            <option>Full-time</option>
+                            <option>Contract</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="pay">Pay <span class="optional">(optional)</span></label>
+                        <input type="text" id="pay" name="pay" placeholder="e.g. N50,000 or Negotiable" maxlength="60">
+                    </div>
+                </div>
+                <div class="field-work">
+                    <label for="description">Job details</label>
+                    <textarea id="description" name="description" rows="6" minlength="10" maxlength="600" placeholder="Describe the work, when you need it done and anything the worker should bring." required></textarea>
+                    <p class="hint">Up to 600 characters.</p>
+                </div>
+                <div class="field">
+                    <label for="poster-name">Your name</label>
+                    <input type="text" id="poster-name" name="poster_name" autocomplete="name" maxlength="60" minlength="2" required>
+                </div>
+                <div class="field">
+                    <div class="call">
+                        <label for="phone">Phone number (WhatsApp)</label>
+                        <input type="tel" id="phone" name="phone" placeholder="08012345678" autocomplete="tel" inputmode="tel" pattern="(0|\+?234)[789][01][0-9]{8}" title="Enter a valid Nigerian number, e.g. 08012345678" required>
+                    </div>
+                    <div class="call">
+                        <label for="phone-call">Phone number (call) <span class="optional">(optional)</span></label>
+                        <input type="tel" id="phone-call" name="phone_call" placeholder="08012345678" inputmode="tel" pattern="(0|\+?234)[789][01][0-9]{8}" title="Enter a valid Nigerian number, e.g. 08012345678">
+                    </div>
+                </div>
+                <div class="row-2">
+                    <div class="field">
+                        <label for="pin">Create a 6-digit PIN</label>
+                        <input type="password" id="pin" name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="new-password" title="Exactly 6 digits" required>
+                    </div>
+                    <div class="field">
+                        <label for="pin-confirm">Confirm PIN</label>
+                        <input type="password" id="pin-confirm" name="pin_confirm" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="new-password" title="Exactly 6 digits" required>
+                    </div>
+                </div>
+                <p class="hint">You will need this PIN to close the job once it is filled. Do not share it.</p>
+                <div class="consent">
+                    <input type="checkbox" id="consent" name="consent" required>
+                    <label for="consent">I agree that workers can contact me on these numbers.</label>
+                </div>
+                <p id="msg" class="msg" role="status"></p>
+                <button type="submit" class="submit-btn">Post my job</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>sabi | Skilled workers in Port Harcourt</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/nav.js"></script>
+    <script src="post-job.js"></script>
+</body>
+</html>

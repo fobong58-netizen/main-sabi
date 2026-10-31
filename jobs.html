@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jobs | sabi</title>
+    <meta name="description" content="Open jobs for plumbers, electricians, welders, tailors and mechanics in Port Harcourt.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/listed.css">
+    <link rel="stylesheet" href="/profile.css">
+    <link rel="stylesheet" href="/jobs.css">
+</head>
+<body class="page-jobs">
+    <header>
+        <nav class="nav-bar">
+            <h1 class="logo">sabi</h1>
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <div class="nav-sub" id="navMenu">
+                <a href="/index.html"><button>find a service</button></a>
+                <a href="/jobs.html"><button>jobs</button></a>
+                <a href="/listed.html"><button>get listed</button></a>
+                <a href="/profile.html"><button>my profile</button></a>
+                <a href="/post-job.html"><button>post a job</button></a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="top-text">
+            <h1>Jobs in Port Harcourt</h1>
+            <p>Find work that matches your trade. Call or WhatsApp the person who posted the job.</p>
+            <a class="post-link" href="/post-job.html">Post a job</a>
+        </div>
+        <div class="con wide">
+            <form class="card" id="filters">
+                <div class="row-3">
+                    <div class="field">
+                        <label for="trade">Trade</label>
+                        <select id="trade"></select>
+                    </div>
+                    <div class="field">
+                        <label for="area">Area</label>
+                        <select id="area"></select>
+                    </div>
+                    <div class="field">
+                        <label for="query">Search <span class="optional">(optional)</span></label>
+                        <input type="text" id="query" placeholder="e.g. gate, wiring">
+                    </div>
+                </div>
+            </form>
+            <div class="results-bar">
+                <h2 id="count">Jobs</h2>
+            </div>
+            <div class="job-list" id="jobs"></div>
+        </div>
+    </main>
+
+    <dialog class="close-modal" id="closeModal" aria-label="Close job">
+        <form id="close-form">
+            <h3>Close this job</h3>
+            <p class="hint">Enter the 6-digit PIN you created when you posted it.</p>
+            <input type="password" id="close-pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="current-password" title="Your 6-digit PIN" required>
+            <p id="close-msg" class="msg" role="status"></p>
+            <div class="btn-row">
+                <button type="submit" class="submit-btn">Close job</button>
+                <button type="button" class="ghost-btn" id="close-cancel">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer>
+        <p>sabi | Skilled workers in Port Harcourt</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/nav.js"></script>
+    <script src="jobs.js"></script>
+</body>
+</html>

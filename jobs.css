@@ -1,0 +1,99 @@
+/* Styles for jobs.html and post-job.html. Load after listed.css and profile.css. */
+
+/* nav: highlight the current page instead of "get listed" */
+.page-jobs .nav-sub a[href="/listed.html"] button,
+.page-post .nav-sub a[href="/listed.html"] button {
+    background-color: transparent;
+    color: var(--white);
+    font-weight: 500;
+}
+.page-jobs .nav-sub a[href="/listed.html"] button:hover,
+.page-post .nav-sub a[href="/listed.html"] button:hover { background-color: rgba(255, 255, 255, 0.14); }
+.page-jobs .nav-sub a[href="/jobs.html"] button,
+.page-post .nav-sub a[href="/post-job.html"] button {
+    background-color: var(--sun);
+    color: var(--blue-deep);
+    font-weight: 600;
+}
+
+.con.wide { width: min(900px, 100%); display: flex; flex-direction: column; gap: 18px; }
+
+.post-link {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: var(--blue);
+    color: var(--white);
+    font-weight: 600;
+    text-decoration: none;
+}
+.post-link:hover { background: var(--blue-deep); }
+
+.results-bar h2 { font-family: var(--font-display); font-size: 1.4rem; }
+
+.job-list { display: flex; flex-direction: column; gap: 16px; }
+
+.job-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.job-head h3 { font-family: var(--font-display); font-size: 1.2rem; overflow-wrap: anywhere; }
+.sub { color: var(--muted); font-size: 0.93rem; }
+.muted { color: var(--muted); font-size: 0.88rem; }
+
+.badge.type { flex: none; background: #e6e9f8; color: var(--blue); white-space: nowrap; }
+
+.pay { font-weight: 600; color: var(--green, #0b6e44); }
+
+.job-desc {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.job-desc.open { display: block; }
+.more { align-self: flex-start; padding: 0; }
+
+.actions { display: flex; gap: 8px; }
+.actions a {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.call-btn { background: var(--white); color: var(--blue); border: 2px solid var(--blue); }
+.call-btn:hover { background: #eef0fb; }
+.wa-btn { background: #137c3f; color: var(--white); border: 2px solid #137c3f; }
+.wa-btn:hover { background: #0d5f2f; }
+
+.close-job { align-self: flex-start; font-size: 0.88rem; font-weight: 500; color: var(--muted); }
+
+.empty {
+    background: var(--white);
+    border: 2px dashed var(--line);
+    border-radius: 10px;
+    padding: 32px 20px;
+    text-align: center;
+    color: var(--muted);
+}
+.empty h3 { font-family: var(--font-display); font-size: 1.2rem; color: var(--text); margin-bottom: 6px; }
+.empty .post-link { margin-top: 14px; }
+
+/* close-job popup */
+.close-modal {
+    width: min(380px, calc(100% - 24px));
+    margin: auto;
+    padding: 24px;
+    border: none;
+    border-radius: 14px;
+    background: var(--white);
+    color: var(--text);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+.close-modal::backdrop { background: rgba(14, 25, 65, 0.65); }
+.close-modal form { display: flex; flex-direction: column; gap: 14px; }
+.close-modal h3 { font-family: var(--font-display); font-size: 1.3rem; }
