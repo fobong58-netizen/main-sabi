@@ -126,12 +126,66 @@ function buildCard(worker, index) {
         '<p class="muted">' + yearsText + ' of experience</p>' +
         '<ul class="chips">' + chips + '</ul>' +
         about +
+        '<button type="button" class="view-btn" data-id="' + escapeText(String(worker.id)) + '" data-color="' + color + '">View profile</button>' +
         '<div class="actions">' +
             '<a class="call-btn" href="tel:' + escapeText(callNumber) + '">Call</a>' +
             '<a class="wa-btn" href="https://wa.me/' + whatsappNumber(worker.phone) + '" target="_blank" rel="noopener">WhatsApp</a>' +
         '</div>' +
     '</article>';
 }
+
+// ---------- profile popup ----------
+const profileModal = document.getElementById("profileModal");
+const profileBody = document.getElementById("profileBody");
+
+function openProfile(worker, color) {
+    const photoOk = worker.photo.indexOf("https://") === 0;
+    const avatar = photoOk
+        ? '<img src="' + worker.photo.replace(/"/g, "%22") + '" alt="">'
+        : escapeText(getInitials(worker.name));
+    const badge = worker.verified
+        ? '<span class="badge ok">Verified</span>'
+        : '<span class="badge pending">Verification pending</span>';
+    const chips = worker.skills.map(function (skill) {
+        return "<li>" + escapeText(skill) + "</li>";
+    }).join("");
+    const about = worker.about
+        ? '<div class="pm-section"><h4>About</h4><p class="pm-about">' + escapeText(worker.about) + "</p></div>"
+        : "";
+    const callNumber = worker.callPhone || worker.phone;
+    const yearsText = worker.years === 1 ? "1 year" : worker.years + " years";
+
+    profileBody.innerHTML =
+        '<div class="pm-head">' +
+            '<div class="pm-avatar" style="background-color:' + color + '">' + avatar + '</div>' +
+            '<h3 class="pm-name">' + escapeText(worker.name) + '</h3>' +
+            '<p class="sub">' + escapeText(worker.trade) + ' in ' + escapeText(worker.area) + '</p>' +
+            badge +
+            '<p class="muted">' + yearsText + ' of experience</p>' +
+        '</div>' +
+        '<div class="pm-section"><h4>Skills</h4><ul class="chips">' + chips + '</ul></div>' +
+        about +
+        '<div class="actions">' +
+            '<a class="call-btn" href="tel:' + escapeText(callNumber) + '">Call</a>' +
+            '<a class="wa-btn" href="https://wa.me/' + whatsappNumber(worker.phone) + '" target="_blank" rel="noopener">WhatsApp</a>' +
+        '</div>';
+
+    profileModal.showModal();
+}
+
+results.addEventListener("click", function (event) {
+    const button = event.target.closest(".view-btn");
+    if (!button) return;
+    const worker = allWorkers.find(function (w) { return String(w.id) === button.dataset.id; });
+    if (worker) openProfile(worker, button.dataset.color);
+});
+
+// close with the X button or by clicking the dark area outside the box
+profileModal.addEventListener("click", function (event) {
+    if (event.target === profileModal || event.target.closest(".pm-close")) {
+        profileModal.close();
+    }
+});
 
 // ---------- show the results ----------
 function showWorkers() {

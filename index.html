@@ -87,19 +87,28 @@
         </div>
         <div id="results" class="cards"></div>
     </main>
-
-    <section class="cta">
-        <h2>Are you an artisan?</h2>
-        <p>Join free, get a verification badge and more customers.</p>
-        <a class="create" href="/listed.html">Create your profile</a>
+    <section class="join-band">
+        <h1>Are you an artisan?</h1>
+        <h4>join free, get a verification badge and more customers.</h4>
+        <a href="/listed.html">
+            <button>create your profile</button>
+        </a>
     </section>
     <br>
     <br>
+    
+
     <footer>
         <p>sabi | Skilled workers in Port Harcourt</p>
     </footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <dialog class="profile-modal" id="profileModal" aria-label="Worker profile">
+        <div class="pm-inner">
+            <button class="pm-close" type="button" aria-label="Close profile">&times;</button>
+            <div id="profileBody"></div>
+        </div>
+    </dialog>
     <script src="nav.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>
 </html>

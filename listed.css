@@ -343,3 +343,157 @@ textarea:focus-visible {
     min-width: 0;
     font: inherit;
 }
+
+/* ---------- Hamburger toggle ---------- */
+.menu-toggle {
+    display: none;
+    position: relative;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.menu-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+.menu-toggle .bar {
+    position: absolute;
+    left: 11px;
+    width: 22px;
+    height: 2.5px;
+    border-radius: 2px;
+    background-color: var(--white);
+    transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1),
+                opacity 0.2s ease,
+                background-color 0.2s ease;
+}
+
+.menu-toggle .bar:nth-child(1) { top: 14px; }
+.menu-toggle .bar:nth-child(2) { top: 21px; }
+.menu-toggle .bar:nth-child(3) { top: 28px; }
+
+/* open state: bars become an X */
+.menu-toggle[aria-expanded="true"] .bar {
+    background-color: var(--sun);
+}
+
+.menu-toggle[aria-expanded="true"] .bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle[aria-expanded="true"] .bar:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.menu-toggle[aria-expanded="true"] .bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-bar :focus-visible {
+    outline-color: var(--white);
+}
+
+/* ---------- Mobile menu (dropdown) ---------- */
+@media (max-width: 700px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-sub {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        padding: 12px 3% 16px;
+        overflow: visible;
+        background-color: var(--blue-deep);
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: opacity 0.2s ease, transform 0.25s ease, visibility 0s linear 0.25s;
+    }
+
+    .nav-sub.open {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        transition: opacity 0.2s ease, transform 0.25s ease, visibility 0s;
+    }
+
+    .nav-sub a {
+        display: block;
+    }
+
+    .nav-sub button {
+        width: 100%;
+        height: 48px;
+        padding: 0 16px;
+        font-size: 1rem;
+        text-align: left;
+        border-radius: 10px;
+    }
+}
+
+/* ---------- Choose file button ---------- */
+.photo-row input[type="file"] {
+    color: var(--muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+}
+
+.photo-row input[type="file"]::file-selector-button {
+    margin-right: 14px;
+    /* padding: 10px 18px; */
+    font: inherit;
+    font-weight: 600;
+    color: var(--blue-deep);
+    background-color: var(--sun);
+    border: none;
+    /* border: 2px solid var(--blue-deep); */
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 rgba(14, 25, 65, 0.25);
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.photo-row input[type="file"]::file-selector-button:hover {
+    background-color: #ffb74af6;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 rgba(14, 25, 65, 0.3);
+}
+
+.photo-row input[type="file"]::file-selector-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+}
+
+footer{
+    background-color: var(--blue-deep);
+    color: #c9cfee;
+    padding: 24px 5%;
+    font-size: 0.92rem;
+}
+
+@media (max-width: 700px) {
+    .photo-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .photo-row input[type="file"] {
+        width: 100%;
+    }
+}
