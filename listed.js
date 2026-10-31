@@ -32,8 +32,23 @@ async function phoneAlreadyListed(phone) {
     return data.length > 0;
 }
 
-async function saveWorker(worker) {
-    const { error } = await db.from("artisans").insert([worker]);
+let lastRecoveryCode = "";
+
+// Saved through a database function so the PIN is hashed on the server and never stored as plain text.
+async function saveWorker(worker, pin) {
+    const { data, error } = await db.rpc("create_artisan", {
+        p_pin: pin,
+        p_name: worker.name,
+        p_trade: worker.trade,
+        p_area: worker.area,
+        p_phone: worker.phone,
+        p_call_phone: worker.call_phone,
+        p_years: worker.years,
+        p_skills: worker.skills,
+        p_about: worker.about,
+        p_photo_url: worker.photo_url
+    });
+    lastRecoveryCode = error ? "" : data;
     return error; // null when it worked
 }
 
@@ -132,6 +147,16 @@ form.addEventListener("submit", async function (event) {
         return;
     }
 
+    const pin = form.pin.value;
+    if (!/^[0-9]{6}$/.test(pin)) {
+        showMessage("Your PIN must be exactly 6 digits.", true);
+        return;
+    }
+    if (pin !== form.pin_confirm.value) {
+        showMessage("The two PINs do not match.", true);
+        return;
+    }
+
     const phone = digitsOnly(form.phone.value);
     const years = Number(form.experience.value);
 
@@ -171,7 +196,7 @@ form.addEventListener("submit", async function (event) {
         skills: skills,
         about: form.about.value.trim(),
         verified: false
-    });
+    }, pin);
 
     submitButton.disabled = false;
 
@@ -188,5 +213,5 @@ form.addEventListener("submit", async function (event) {
 
     form.reset();
     clearPhotoPreview();
-    showMessage("Your profile is created. Customers can now find you on the find a service page.", false);
+    showMessage("Your profile is created. Customers can now find you on the find a service page. Your recovery code is " + lastRecoveryCode + ". Write it down or take a screenshot now, because it is shown only once. You need it if you forget your PIN. Use the my profile page to edit your profile.", false);
 });

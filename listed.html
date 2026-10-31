@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/listed.css">
+    <link rel="stylesheet" href="/profile.css">
 </head>
 <body>
     <header>
@@ -25,6 +26,9 @@
                 <button>jobs</button>
                 <a href="/listed.html">
                     <button>get listed</button>
+                </a>
+                <a href="/profile.html">
+                    <button>my profile</button>
                 </a>
                 <button>post a job</button>
             </div>
@@ -109,6 +113,17 @@
                     <label for="about">About your work <span class="optional">(optional)</span></label>
                     <textarea id="about" name="about" rows="5" maxlength="400" placeholder="Tell customers what you are good at and how you work."></textarea>
                 </div>
+                <div class="row-2">
+                    <div class="field">
+                        <label for="pin">Create a 6-digit PIN</label>
+                        <input type="password" id="pin" name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="new-password" title="Exactly 6 digits" required>
+                    </div>
+                    <div class="field">
+                        <label for="pin-confirm">Confirm PIN</label>
+                        <input type="password" id="pin-confirm" name="pin_confirm" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="new-password" title="Exactly 6 digits" required>
+                    </div>
+                </div>
+                <p class="hint">You will need your WhatsApp number and this PIN to view or edit your profile later. Do not share it.</p>
                 <div class="consent">
                     <input type="checkbox" id="consent" name="consent" required>
                     <label for="consent">I agree that customers and employers can contact me on this number.</label>
