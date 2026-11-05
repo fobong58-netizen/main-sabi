@@ -4,9 +4,6 @@ const db = createClient(
     "sb_publishable_83Wn3F18p59ChfH4340LjQ_-MVuRkc6"
 );
 
-// The developer's WhatsApp number, international format (no + or spaces).
-const DEV_WHATSAPP = "2347062812735";
-
 const form = document.getElementById("feedback-form");
 const msg = document.getElementById("msg");
 const counter = document.getElementById("counter");
@@ -52,47 +49,38 @@ form.addEventListener("submit", async function (event) {
     }
 
     const rating = form.elements["rating"].value; // "" when none chosen
-    const kind = form.elements["kind"].value;
-    const name = form.name.value.trim();
-    const contact = form.contact.value.trim();
-    const pageName = form.page.value;
 
     submitButton.disabled = true;
     showMessage("Sending...", false);
 
-    // 1) keep a copy in the database so nothing gets lost
-    try {
-        const { error } = await db.rpc("submit_feedback", {
-            p_kind: kind,
-            p_message: message,
-            p_name: name,
-            p_contact: contact,
-            p_rating: rating ? Number(rating) : 0,
-            p_page: pageName,
-            p_device_id: deviceId()
-        });
-        if (error) console.error("Could not save feedback:", error.message);
-    } catch (e) {
-        console.error("Could not save feedback:", e);
+    // saving the row triggers the SMS to the developer (done on the server)
+    const { data, error } = await db.rpc("submit_feedback", {
+        p_kind: form.elements["kind"].value,
+        p_message: message,
+        p_name: form.name.value.trim(),
+        p_contact: form.contact.value.trim(),
+        p_rating: rating ? Number(rating) : 0,
+        p_page: form.page.value,
+        p_device_id: deviceId()
+    });
+
+    submitButton.disabled = false;
+
+    if (error || !data) {
+        console.error("Could not send feedback:", error && error.message);
+        showMessage("Could not send your feedback. Check your internet and try again.", true);
+        return;
     }
-
-    // 2) open WhatsApp with the message ready to send to the developer
-    const lines = [
-        "*sabi feedback: " + kind + "*",
-        "",
-        message,
-        ""
-    ];
-    if (rating) lines.push("Rating: " + rating + "/5");
-    if (pageName) lines.push("Page: " + pageName);
-    if (name) lines.push("From: " + name);
-    if (contact) lines.push("Contact: " + contact);
-
-    const link = "https://wa.me/" + DEV_WHATSAPP + "?text=" + encodeURIComponent(lines.join("\n").trim());
+    if (!data.ok) {
+        const reasons = {
+            limit: "You have sent a lot of feedback today. Please try again tomorrow.",
+            invalid: "Your message is too short or too long. Please check it and try again."
+        };
+        showMessage(reasons[data.reason] || "Something went wrong and your feedback was not sent.", true);
+        return;
+    }
 
     form.reset();
     counter.textContent = "0";
-    submitButton.disabled = false;
-    showMessage("Almost done. WhatsApp is opening. Tap Send there to deliver your message.", false);
-    window.location.href = link;
+    showMessage("Thank you. Your feedback was sent to the sabi team.", false);
 });
