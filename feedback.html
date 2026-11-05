@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>feedback | sabi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/listed.css">
+    <link rel="stylesheet" href="/profile.css">
+    <link rel="stylesheet" href="/feedback.css">
+</head>
+<body class="page-feedback">
+    <header>
+        <nav class="nav-bar">
+            <h1 class="logo">sabi</h1>
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <div class="nav-sub" id="navMenu">
+                <a href="/index.html"><button>find a service</button></a>
+                <a href="/jobs.html"><button>jobs</button></a>
+                <a href="/listed.html"><button>get listed</button></a>
+                <a href="/profile.html"><button>my profile</button></a>
+                <a href="/post-job.html"><button>post a job</button></a>
+                <a href="/feedback.html"><button>feedback</button></a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="top-text">
+            <h1>Tell us how sabi is working for you</h1>
+            <p>Found a problem? Have an idea? Want to share your experience? Every message is read by the person who builds sabi.</p>
+        </div>
+        <div class="con">
+            <form class="card" id="feedback-form">
+                <fieldset class="field kinds">
+                    <legend>What do you want to share?</legend>
+                    <div class="kind-options">
+                        <input type="radio" name="kind" id="k-suggestion" value="Suggestion" checked>
+                        <label for="k-suggestion">Suggestion</label>
+                        <input type="radio" name="kind" id="k-problem" value="Problem" >
+                        <label for="k-problem">Problem</label>
+                        <input type="radio" name="kind" id="k-experience" value="Experience">
+                        <label for="k-experience">My experience</label>
+                        <input type="radio" name="kind" id="k-review" value="Review">
+                        <label for="k-review">Review of sabi</label>
+                    </div>
+                </fieldset>
+                <div class="field">
+                    <label for="message">Your message</label>
+                    <textarea id="message" name="message" rows="6" minlength="10" maxlength="1000" placeholder="Be as specific as you can. If something broke, tell us what you tapped and what happened." required></textarea>
+                    <p class="hint"><span id="counter">0</span> / 1000</p>
+                </div>
+                <div class="field">
+                    <label>Overall, how is sabi for you? <span class="optional">(optional)</span></label>
+                    <div class="star-pick" role="radiogroup" aria-label="Rating">
+                        <input type="radio" name="rating" id="r5" value="5"><label for="r5" title="5 stars">★</label>
+                        <input type="radio" name="rating" id="r4" value="4"><label for="r4" title="4 stars">★</label>
+                        <input type="radio" name="rating" id="r3" value="3"><label for="r3" title="3 stars">★</label>
+                        <input type="radio" name="rating" id="r2" value="2"><label for="r2" title="2 stars">★</label>
+                        <input type="radio" name="rating" id="r1" value="1"><label for="r1" title="1 star">★</label>
+                    </div>
+                </div>
+                <div class="row-2">
+                    <div class="field">
+                        <label for="page">Which page is this about? <span class="optional">(optional)</span></label>
+                        <select id="page" name="page">
+                            <option value="">Not about one page</option>
+                            <option>Find a service</option>
+                            <option>Jobs</option>
+                            <option>Get listed</option>
+                            <option>My profile</option>
+                            <option>Post a job</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="name">Your name <span class="optional">(optional)</span></label>
+                        <input type="text" id="name" name="name" autocomplete="name" maxlength="60">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="contact">Phone or email <span class="optional">(optional)</span></label>
+                    <input type="text" id="contact" name="contact" maxlength="80" placeholder="Only if you want a reply">
+                    <p class="hint">We only use this to reply to you. It is never shown on the site.</p>
+                </div>
+                <!-- spam trap: real people never see or fill this -->
+                <div class="trap" aria-hidden="true">
+                    <label for="website">Leave this empty</label>
+                    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                </div>
+                <p id="msg" class="msg" role="status"></p>
+                <button type="submit" class="submit-btn">Send on WhatsApp</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <p>sabi | Skilled workers in Port Harcourt</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/nav.js"></script>
+    <script src="feedback.js"></script>
+</body>
+</html>

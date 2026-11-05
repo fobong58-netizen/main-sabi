@@ -1,0 +1,55 @@
+/* Styles for feedback.html. Load after listed.css and profile.css. */
+
+/* nav: highlight "feedback" instead of "get listed" */
+.page-feedback .nav-sub a[href="/listed.html"] button {
+    background-color: transparent;
+    color: var(--white);
+    font-weight: 500;
+}
+.page-feedback .nav-sub a[href="/listed.html"] button:hover { background-color: rgba(255, 255, 255, 0.14); }
+.page-feedback .nav-sub a[href="/feedback.html"] button {
+    background-color: var(--sun);
+    color: var(--blue-deep);
+    font-weight: 600;
+}
+
+fieldset.kinds { border: none; min-width: 0; }
+.kinds legend { font-weight: 600; font-size: 0.95rem; margin-bottom: 8px; }
+
+/* type of feedback: pill choices */
+.kind-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.kind-options input { position: absolute; opacity: 0; pointer-events: none; }
+.kind-options label {
+    padding: 9px 16px;
+    font-weight: 500;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    background: var(--white);
+    cursor: pointer;
+}
+.kind-options label:hover { border-color: var(--blue); }
+.kind-options input:checked + label {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: var(--white);
+    font-weight: 600;
+}
+.kind-options input:focus-visible + label { outline: 3px solid #1a6bff; outline-offset: 2px; }
+
+/* star rating: reversed order so hover/checked fills the stars to the left */
+.star-pick { display: inline-flex; flex-direction: row-reverse; justify-content: flex-end; gap: 2px; }
+.star-pick input { position: absolute; opacity: 0; pointer-events: none; }
+.star-pick label {
+    font-size: 2rem;
+    line-height: 1;
+    padding: 2px 3px;
+    font-weight: 400;
+    color: var(--line);
+    cursor: pointer;
+}
+.star-pick label:hover,
+.star-pick label:hover ~ label,
+.star-pick input:checked ~ label { color: var(--sun); }
+.star-pick input:focus-visible + label { outline: 3px solid #1a6bff; border-radius: 6px; }
+
+.trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
