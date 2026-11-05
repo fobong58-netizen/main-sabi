@@ -6,7 +6,7 @@ const db = createClient(
 
 // Keep these lists the same as on the get listed page.
 const TRADES = ["Plumber", "Electrician", "Carpenter", "Painter", "Tiler", "Welder", "AC technician", "Mechanic"];
-const AREAS = ["Rumuokoro", "Rumuola", "Rumuigbo", "Eliozu", "Diobu", "GRA", "Trans Amadi", "Mile 1", "Mile 3", "Ada George", "Woji", "Choba"];
+const AREAS = ["Rumuokoro", "Rumuola", "Rumuigbo", "Eliozu", "Diobu", "GRA", "Trans Amadi", "Mile 1", "Mile 3", "Ada George", "Woji", "Choba", "Alakahia"];
 const PHOTO_BUCKET = "profile-photos";
 const MAX_PHOTO_MB = 10;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
