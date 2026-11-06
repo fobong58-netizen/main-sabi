@@ -79,6 +79,15 @@ function whatsappLink(worker) {
     return "https://wa.me/" + whatsappNumber(worker.phone) + "?text=" + encodeURIComponent(text);
 }
 
+// ---------- profile photo (tap to enlarge) ----------
+function photoButton(url, name) {
+    const safe = url.replace(/"/g, "%22");
+    const safeName = escapeText(name).replace(/"/g, "&quot;");
+    return '<button type="button" class="zoom-photo" data-full="' + safe + '" data-name="' + safeName + '" aria-label="View ' + safeName + ' photo larger">' +
+        '<img src="' + safe + '" alt="" loading="lazy">' +
+    '</button>';
+}
+
 // ---------- filter + sort ----------
 function filterWorkers() {
     const trade = tradeSelect.selectedIndex === 0 ? "" : tradeSelect.value;
@@ -117,7 +126,7 @@ function buildCard(worker, index) {
         : "";
     const photoOk = worker.photo.indexOf("https://") === 0;
     const avatarInner = photoOk
-        ? '<img src="' + worker.photo.replace(/"/g, "%22") + '" alt="" loading="lazy">'
+        ? photoButton(worker.photo, worker.name)
         : escapeText(getInitials(worker.name));
     const callNumber = worker.callPhone || worker.phone;
     const yearsText = worker.years === 1 ? "1 year" : worker.years + " years";
@@ -150,7 +159,7 @@ const profileBody = document.getElementById("profileBody");
 function openProfile(worker, color) {
     const photoOk = worker.photo.indexOf("https://") === 0;
     const avatar = photoOk
-        ? '<img src="' + worker.photo.replace(/"/g, "%22") + '" alt="">'
+        ? photoButton(worker.photo, worker.name)
         : escapeText(getInitials(worker.name));
     const badge = worker.verified
         ? '<span class="badge ok">Verified</span>'
@@ -185,6 +194,8 @@ function openProfile(worker, color) {
 }
 
 results.addEventListener("click", function (event) {
+    const zoom = event.target.closest(".zoom-photo");
+    if (zoom) { openPhoto(zoom); return; }
     const button = event.target.closest(".view-btn");
     if (!button) return;
     const worker = allWorkers.find(function (w) { return String(w.id) === button.dataset.id; });
@@ -193,10 +204,32 @@ results.addEventListener("click", function (event) {
 
 // close with the X button or by clicking the dark area outside the box
 profileModal.addEventListener("click", function (event) {
+    const zoom = event.target.closest(".zoom-photo");
+    if (zoom) { openPhoto(zoom); return; }
     if (event.target === profileModal || event.target.closest(".pm-close")) {
         profileModal.close();
     }
 });
+
+// ---------- big photo viewer ----------
+const photoModal = document.getElementById("photoModal");
+const photoBig = document.getElementById("photoBig");
+const photoCaption = document.getElementById("photoCaption");
+
+function openPhoto(button) {
+    photoBig.src = button.dataset.full;
+    photoBig.alt = "Photo of " + button.dataset.name;
+    photoCaption.textContent = button.dataset.name;
+    photoModal.showModal();
+}
+
+// close with the X, the dark area, or tapping the photo itself
+photoModal.addEventListener("click", function (event) {
+    if (event.target.closest(".ph-close") || event.target === photoModal || event.target === photoBig) {
+        photoModal.close();
+    }
+});
+photoModal.addEventListener("close", function () { photoBig.removeAttribute("src"); });
 
 // ---------- show the results ----------
 function showWorkers() {
