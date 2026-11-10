@@ -56,6 +56,10 @@ header{
     z-index: 20;
 }
 
+.bar{
+    background-color: var(--sun);
+}
+
 .logo{
     font-family: var(--font-display);
     font-weight: 800;
