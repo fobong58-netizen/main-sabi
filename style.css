@@ -521,9 +521,21 @@ footer{
                 background-color 0.2s ease;
 }
 
-.menu-toggle .bar:nth-child(1) { top: 14px; }
-.menu-toggle .bar:nth-child(2) { top: 21px; }
-.menu-toggle .bar:nth-child(3) { top: 28px; }
+.menu-toggle .bar:nth-child(1) { 
+    top: 14px;
+    background-color: var(--sun);
+    color: var(--sun);
+ }
+.menu-toggle .bar:nth-child(2) {
+     top: 21px; 
+     color: var(--sun);
+     background-color: var(--sun);
+    }
+.menu-toggle .bar:nth-child(3) {
+    background-color: var(--sun);
+     top: 28px; 
+     color: var(--sun);
+    }
 
 /* open state: bars become an X */
 .menu-toggle[aria-expanded="true"] .bar {
@@ -551,8 +563,6 @@ footer{
 @media (max-width: 700px) {
     .menu-toggle {
         display: block;
-        background-color: var(--sun);
-        color: var(--sun);
     }
 
     .nav-sub {
