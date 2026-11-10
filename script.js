@@ -146,8 +146,8 @@ function buildCard(worker, index) {
         about +
         '<button type="button" class="view-btn" data-id="' + escapeText(String(worker.id)) + '" data-color="' + color + '">View profile</button>' +
         '<div class="actions">' +
-            '<a class="call-btn" data-contact="' + worker.id + '" href="tel:' + escapeText(callNumber) + '">Call</a>' +
-            '<a class="wa-btn" data-contact="' + worker.id + '" href="' + whatsappLink(worker) + '" target="_blank" rel="noopener">WhatsApp</a>' +
+            '<a class="call-btn" data-contact="' + worker.id + '" href="tel:' + escapeText(callNumber) + '">Call <i class="fa-solid fa-phone"></i></a>' +
+            '<a class="wa-btn" data-contact="' + worker.id + '" href="' + whatsappLink(worker) + '" target="_blank" rel="noopener">WhatsApp </a>' +
         '</div>' +
     '</article>';
 }
@@ -185,7 +185,7 @@ function openProfile(worker, color) {
         '<div class="pm-section"><h4>Skills</h4><ul class="chips">' + chips + '</ul></div>' +
         about +
         '<div class="actions">' +
-            '<a class="call-btn" data-contact="' + worker.id + '" href="tel:' + escapeText(callNumber) + '">Call</a>' +
+            '<a class="call-btn" data-contact="' + worker.id + '" href="tel:' + escapeText(callNumber) + '">Call <img src="/phone-solid-full.svg" alt=""></a>' +
             '<a class="wa-btn" data-contact="' + worker.id + '" href="' + whatsappLink(worker) + '" target="_blank" rel="noopener">WhatsApp</a>' +
         '</div>';
 
