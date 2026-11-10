@@ -361,6 +361,13 @@ header{
     border: 2px solid var(--blue);
 }
 
+.call-btn .icon-phone{
+    width: 1em;
+    height: 1em;
+    flex: none;
+    margin-right: 8px;
+}
+
 .call-btn:hover{
     background-color: #eef0fb;
 }

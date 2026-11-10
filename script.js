@@ -15,6 +15,9 @@ const results = document.getElementById("results");
 
 const avatarColors = ["#2a3d99", "#0b6e44", "#9b3d12", "#6b2f8f", "#14707a", "#a12a4d"];
 
+// phone icon (from phone-solid-full.svg); takes the colour of the button text
+const PHONE_ICON = '<svg class="icon-phone" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" aria-hidden="true" focusable="false"><path fill="currentColor" d="M224.2 89C216.3 70.1 195.7 60.1 176.1 65.4L170.6 66.9C106 84.5 50.8 147.1 66.9 223.3C104 398.3 241.7 536 416.7 573.1C493 589.3 555.5 534 573.1 469.4L574.6 463.9C580 444.2 569.9 423.6 551.1 415.8L453.8 375.3C437.3 368.4 418.2 373.2 406.8 387.1L368.2 434.3C297.9 399.4 241.3 341 208.8 269.3L253 233.3C266.9 222 271.6 202.9 264.8 186.3L224.2 89z"/></svg>';
+
 // ---------- storage ----------
 // Workers now live in the Supabase "artisans" table, so every visitor sees the same list.
 // They are fetched once when the page loads and kept here, so typing in the
@@ -146,7 +149,7 @@ function buildCard(worker, index) {
         about +
         '<button type="button" class="view-btn" data-id="' + escapeText(String(worker.id)) + '" data-color="' + color + '">View profile</button>' +
         '<div class="actions">' +
-            '<a class="call-btn" data-contact="' + worker.id + '" href="tel:' + escapeText(callNumber) + '">Call <i class="fa-solid fa-phone"></i></a>' +
+            '<a class="call-btn" data-contact="' + worker.id + '" href="tel:' + escapeText(callNumber) + '">' + PHONE_ICON + ' Call</a>' +
             '<a class="wa-btn" data-contact="' + worker.id + '" href="' + whatsappLink(worker) + '" target="_blank" rel="noopener">WhatsApp </a>' +
         '</div>' +
     '</article>';
@@ -185,7 +188,7 @@ function openProfile(worker, color) {
         '<div class="pm-section"><h4>Skills</h4><ul class="chips">' + chips + '</ul></div>' +
         about +
         '<div class="actions">' +
-            '<a class="call-btn" data-contact="' + worker.id + '" href="tel:' + escapeText(callNumber) + '">Call <img src="/phone-solid-full.svg" alt=""></a>' +
+            '<a class="call-btn" data-contact="' + worker.id + '" href="tel:' + escapeText(callNumber) + '">' + PHONE_ICON + ' Call</a>' +
             '<a class="wa-btn" data-contact="' + worker.id + '" href="' + whatsappLink(worker) + '" target="_blank" rel="noopener">WhatsApp</a>' +
         '</div>';
 
