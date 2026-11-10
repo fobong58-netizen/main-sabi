@@ -58,6 +58,7 @@ header{
 
 .bar{
     background-color: var(--sun);
+    color: var(--sun);
 }
 
 .logo{
