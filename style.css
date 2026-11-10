@@ -563,6 +563,7 @@ footer{
 @media (max-width: 700px) {
     .menu-toggle {
         display: block;
+        background-color: transparent;
     }
 
     .nav-sub {
