@@ -488,6 +488,7 @@ footer{
 .menu-toggle {
     display: none;
     position: relative;
+    background-color: var(--sun);
     flex: none;
     width: 44px;
     height: 44px;
