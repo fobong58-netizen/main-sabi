@@ -19,17 +19,13 @@ const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 // Phone numbers are saved in one format (08012345678) so duplicates can be spotted.
 
 async function phoneAlreadyListed(phone) {
-    const { data, error } = await db
-        .from("artisans")
-        .select("id")
-        .eq("phone", phone)
-        .limit(1);
+    const { data, error } = await db.rpc("phone_listed", { p_phone: phone });
 
     if (error) {
         console.error("Could not check the number:", error.message);
         return null; // null means "could not check"
     }
-    return data.length > 0;
+    return data === true;
 }
 
 let lastRecoveryCode = "";
@@ -53,7 +49,7 @@ async function saveWorker(worker, pin) {
 }
 
 async function uploadPhoto(blob, phone) {
-    const path = phone + "-" + Date.now() + ".jpg";
+    const path = (window.crypto && crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2)) + ".jpg";
     const { error } = await db.storage
         .from(PHOTO_BUCKET)
         .upload(path, blob, { contentType: "image/jpeg", upsert: false });

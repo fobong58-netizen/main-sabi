@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>customer account | sabi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/listed.css">
+    <link rel="stylesheet" href="/profile.css">
+    <style>
+        .page-customer .nav-sub a[href="/listed.html"] button { background-color: transparent; color: var(--white); font-weight: 500; }
+        .page-customer .nav-sub a[href="/listed.html"] button:hover { background-color: rgba(255, 255, 255, 0.14); }
+        .page-customer .nav-sub a[href="/customer.html"] button { background-color: var(--sun); color: var(--blue-deep); font-weight: 600; }
+        .safety-note { border-left: 4px solid var(--sun); background: var(--white); padding: 14px 16px; border-radius: 0 10px 10px 0; color: var(--muted); font-size: 0.93rem; }
+        .safety-note strong { color: var(--text); }
+    </style>
+</head>
+<body class="page-customer">
+    <header>
+        <nav class="nav-bar">
+            <h1 class="logo">sabi</h1>
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="navMenu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <div class="nav-sub" id="navMenu">
+                <a href="/index.html"><button>find a service</button></a>
+                <a href="/jobs.html"><button>jobs</button></a>
+                <a href="/listed.html"><button>get listed</button></a>
+                <a href="/profile.html"><button>my profile</button></a>
+                <a href="/customer.html"><button>customer account</button></a>
+                <a href="/post-job.html"><button>post a job</button></a>
+                <a href="/feedback.html"><button>feedback</button></a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="top-text">
+            <h1>Customer account</h1>
+            <p id="intro">Create a free account to call or WhatsApp artisans. It keeps artisans safe and lets us act fast if someone misbehaves.</p>
+        </div>
+        <div class="con">
+            <div class="safety-note" id="safety">
+                <strong>Why we ask.</strong> Your name and number are never shown on the site. Artisans only see them when you contact them. We record each contact, and accounts reported for abuse can be suspended.
+            </div>
+
+            <form class="card" id="signup-form">
+                <div class="field">
+                    <label for="c-name">Full name</label>
+                    <input type="text" id="c-name" name="name" autocomplete="name" minlength="2" maxlength="60" required>
+                </div>
+                <div class="field">
+                    <label for="c-phone">Phone number (WhatsApp)</label>
+                    <input type="tel" id="c-phone" name="phone" placeholder="08012345678" autocomplete="tel" inputmode="tel" pattern="(0|\+?234)[789][01][0-9]{8}" title="Enter a valid Nigerian number, e.g. 08012345678" required>
+                    <p class="hint">Use a number you answer. We may confirm it before showing a Verified badge on your account.</p>
+                </div>
+                <div class="field">
+                    <label for="c-area">Where do you live?</label>
+                    <select id="c-area" name="area" required></select>
+                </div>
+                <div class="row-2">
+                    <div class="field">
+                        <label for="c-pin">Create a 6-digit PIN</label>
+                        <input type="password" id="c-pin" name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="new-password" title="Exactly 6 digits" required>
+                    </div>
+                    <div class="field">
+                        <label for="c-pin2">Confirm PIN</label>
+                        <input type="password" id="c-pin2" name="pin_confirm" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="new-password" title="Exactly 6 digits" required>
+                    </div>
+                </div>
+                <div class="consent">
+                    <input type="checkbox" id="c-consent" name="consent" required>
+                    <label for="c-consent">I agree to treat artisans with respect. I understand my contacts are recorded and my account can be suspended if I am reported for abuse, harassment or fraud.</label>
+                </div>
+                <p id="signup-msg" class="msg" role="status"></p>
+                <button type="submit" class="submit-btn">Create my account</button>
+                <button type="button" class="link-btn" id="to-login">Already have an account? Sign in</button>
+            </form>
+
+            <form class="card is-hidden" id="login-form">
+                <div class="field">
+                    <label for="l-phone">Phone number (WhatsApp)</label>
+                    <input type="tel" id="l-phone" name="phone" placeholder="08012345678" autocomplete="tel" inputmode="tel" pattern="(0|\+?234)[789][01][0-9]{8}" title="Enter a valid Nigerian number, e.g. 08012345678" required>
+                </div>
+                <div class="field">
+                    <label for="l-pin">PIN</label>
+                    <input type="password" id="l-pin" name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="current-password" title="Your 6-digit PIN" required>
+                </div>
+                <p id="login-msg" class="msg" role="status"></p>
+                <button type="submit" class="submit-btn">Sign in</button>
+                <button type="button" class="link-btn" id="to-signup">New here? Create an account</button>
+            </form>
+
+            <div class="card is-hidden" id="account-box">
+                <div class="profile-summary">
+                    <h2 id="who"></h2>
+                    <span id="status-badge" class="badge"></span>
+                    <p class="hint">You can now call and WhatsApp artisans on sabi.</p>
+                </div>
+                <div class="btn-row">
+                    <a class="submit-btn" id="go-find" href="/index.html" style="text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;flex:1">Find a service</a>
+                    <button type="button" class="ghost-btn" id="logout">Sign out</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>sabi | Skilled workers in Port Harcourt</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/nav.js"></script>
+    <script src="customer.js"></script>
+</body>
+</html>

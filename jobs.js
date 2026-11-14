@@ -22,9 +22,9 @@ let closingId = null;
 
 // ---------- helpers ----------
 function escapeText(text) {
-    const div = document.createElement("div");
-    div.textContent = text;
-    return div.innerHTML;
+    return String(text)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
 function fillSelect(select, items, firstLabel) {
@@ -37,9 +37,9 @@ function whatsappNumber(phone) {
     return digits.startsWith("234") ? digits : "234" + digits.replace(/^0/, "");
 }
 
-function whatsappLink(job) {
+function whatsappText(job) {
     const text = "Hello, I saw your job \"" + job.title + "\" on sabi and I am interested.";
-    return "https://wa.me/" + whatsappNumber(job.phone) + "?text=" + encodeURIComponent(text);
+    return text;
 }
 
 function timeAgo(iso) {
@@ -51,7 +51,7 @@ function timeAgo(iso) {
 
 // ---------- load ----------
 async function getJobs() {
-    const { data, error } = await db.rpc("get_jobs");
+    const { data, error } = await db.rpc("get_job_list");
     if (error) {
         console.error("Could not load jobs:", error.message);
         return null; // null = failed, [] = no jobs yet
@@ -61,7 +61,6 @@ async function getJobs() {
 
 // ---------- build cards ----------
 function buildJob(job) {
-    const callNumber = job.call_phone || job.phone;
     const pay = job.pay ? '<p class="pay">' + escapeText(job.pay) + "</p>" : "";
     const more = job.description.length > 180
         ? '<button type="button" class="link-btn more">Read more</button>'
@@ -80,8 +79,8 @@ function buildJob(job) {
         more +
         '<p class="muted">' + timeAgo(job.created_at) + "</p>" +
         '<div class="actions">' +
-            '<a class="call-btn" href="tel:' + escapeText(callNumber) + '">Call</a>' +
-            '<a class="wa-btn" href="' + whatsappLink(job) + '" target="_blank" rel="noopener">WhatsApp</a>' +
+            '<a class="call-btn" data-job="' + escapeText(String(job.id)) + '" href="#">Call</a>' +
+            '<a class="wa-btn" data-job="' + escapeText(String(job.id)) + '" data-wa-text="' + escapeText(whatsappText(job)) + '" href="#">WhatsApp</a>' +
         "</div>" +
         '<button type="button" class="link-btn close-job" data-id="' + escapeText(String(job.id)) + '">Posted this job? Close it</button>' +
     "</article>";

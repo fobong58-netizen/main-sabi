@@ -25,6 +25,10 @@ function remember(key, id) {
     if (list.indexOf(String(id)) === -1) { list.push(String(id)); lsSet(key, list); }
 }
 
+function customerToken() {
+    try { return (JSON.parse(localStorage.getItem("sabi_customer")) || {}).token || null; } catch (e) { return null; }
+}
+
 // ---------- ratings on cards ----------
 async function loadRatings() {
     const { data, error } = await db.rpc("get_ratings");
@@ -66,6 +70,10 @@ function renderReviewForm() {
     if (!box || !reviewWorker) return;
     const id = reviewWorker.id;
 
+    if (!customerToken()) {
+        box.innerHTML = '<p class="hint-text">Reviews are for signed-in customers who contacted this worker. <a href="/customer.html">Sign in or create an account</a>.</p>';
+        return;
+    }
     if (hasReviewed(id)) {
         box.innerHTML = '<p class="hint-text">Thank you. You have reviewed this worker.</p>';
         return;
@@ -83,7 +91,6 @@ function renderReviewForm() {
         '<form class="review-form" id="reviewForm">' +
             '<p class="rf-title">How was the service?</p>' +
             '<div class="star-input" role="radiogroup" aria-label="Rating">' + stars + '</div>' +
-            '<input type="text" name="reviewer" placeholder="Your name" maxlength="60" required>' +
             '<textarea name="comment" rows="3" maxlength="400" placeholder="Tell others about the work (optional)"></textarea>' +
             '<p class="msg" id="reviewMsg" role="status"></p>' +
             '<button type="submit" class="view-btn">Submit review</button>' +
@@ -129,9 +136,8 @@ profileBody.addEventListener("submit", async function (event) {
     msg.className = "msg success";
 
     const { data, error } = await db.rpc("submit_review", {
+        p_token: customerToken(),
         p_artisan_id: id,
-        p_device_id: deviceId(),
-        p_name: form.reviewer.value.trim(),
         p_rating: Number(form.rating.value),
         p_comment: form.comment.value.trim()
     });
@@ -146,7 +152,9 @@ profileBody.addEventListener("submit", async function (event) {
         const reasons = {
             duplicate: "You have already reviewed this worker.",
             limit: "Too many reviews today. Try again tomorrow.",
-            badname: "Enter your name.",
+            nosession: "Sign in as a customer to leave a review.",
+            suspended: "Your account cannot post reviews.",
+            nocontact: "You can only review a worker you contacted through sabi.",
             badrating: "Choose a star rating."
         };
         if (data.reason === "duplicate") remember("sabi_reviewed", id);

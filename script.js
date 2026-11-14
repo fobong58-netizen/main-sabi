@@ -26,7 +26,7 @@ let allWorkers = [];
 
 async function getWorkers() {
     const { data, error } = await db
-        .from("artisans")
+        .from("artisans_public")
         .select("*")
         .order("created_at", { ascending: false });
 
@@ -45,8 +45,6 @@ async function getWorkers() {
             skills: row.skills || [],
             years: row.years || 0,
             about: row.about || "",
-            phone: row.phone || "",
-            callPhone: row.call_phone || "",
             photo: row.photo_url || "",
             verified: row.verified === true
         };
@@ -55,9 +53,9 @@ async function getWorkers() {
 
 // ---------- helpers ----------
 function escapeText(text) {
-    const div = document.createElement("div");
-    div.textContent = text;
-    return div.innerHTML;
+    return String(text)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
 function getInitials(name) {
@@ -74,12 +72,12 @@ function whatsappNumber(phone) {
     return digits.startsWith("234") ? digits : "234" + digits.replace(/^0/, "");
 }
 
-function whatsappLink(worker) {
+function whatsappText(worker) {
     // "AC technician" keeps its capitals, other trades are lowercased: "a plumber", "an electrician"
     const trade = /^AC\b/.test(worker.trade) ? worker.trade : worker.trade.toLowerCase();
     const article = /^[aeiou]/i.test(worker.trade) ? "an" : "a";
     const text = "Hello, I got your number from sabi. I need " + article + " " + trade + ".";
-    return "https://wa.me/" + whatsappNumber(worker.phone) + "?text=" + encodeURIComponent(text);
+    return text;
 }
 
 // ---------- profile photo (tap to enlarge) ----------
@@ -131,7 +129,6 @@ function buildCard(worker, index) {
     const avatarInner = photoOk
         ? photoButton(worker.photo, worker.name)
         : escapeText(getInitials(worker.name));
-    const callNumber = worker.callPhone || worker.phone;
     const yearsText = worker.years === 1 ? "1 year" : worker.years + " years";
 
     return '<article class="card">' +
@@ -149,8 +146,8 @@ function buildCard(worker, index) {
         about +
         '<button type="button" class="view-btn" data-id="' + escapeText(String(worker.id)) + '" data-color="' + color + '">View profile</button>' +
         '<div class="actions">' +
-            '<a class="call-btn" data-contact="' + worker.id + '" href="tel:' + escapeText(callNumber) + '">' + PHONE_ICON + ' Call</a>' +
-            '<a class="wa-btn" data-contact="' + worker.id + '" href="' + whatsappLink(worker) + '" target="_blank" rel="noopener">WhatsApp </a>' +
+            '<a class="call-btn" data-contact="' + worker.id + '" href="#">' + PHONE_ICON + ' Call</a>' +
+            '<a class="wa-btn" data-contact="' + worker.id + '" href="#" data-wa-text="' + escapeText(whatsappText(worker)) + '">WhatsApp </a>' +
         '</div>' +
     '</article>';
 }
@@ -173,7 +170,6 @@ function openProfile(worker, color) {
     const about = worker.about
         ? '<div class="pm-section"><h4>About</h4><p class="pm-about">' + escapeText(worker.about) + "</p></div>"
         : "";
-    const callNumber = worker.callPhone || worker.phone;
     const yearsText = worker.years === 1 ? "1 year" : worker.years + " years";
 
     profileBody.innerHTML =
@@ -188,8 +184,8 @@ function openProfile(worker, color) {
         '<div class="pm-section"><h4>Skills</h4><ul class="chips">' + chips + '</ul></div>' +
         about +
         '<div class="actions">' +
-            '<a class="call-btn" data-contact="' + worker.id + '" href="tel:' + escapeText(callNumber) + '">' + PHONE_ICON + ' Call</a>' +
-            '<a class="wa-btn" data-contact="' + worker.id + '" href="' + whatsappLink(worker) + '" target="_blank" rel="noopener">WhatsApp</a>' +
+            '<a class="call-btn" data-contact="' + worker.id + '" href="#">' + PHONE_ICON + ' Call</a>' +
+            '<a class="wa-btn" data-contact="' + worker.id + '" href="#" data-wa-text="' + escapeText(whatsappText(worker)) + '">WhatsApp</a>' +
         '</div>';
 
     renderReviewSection(worker);

@@ -72,7 +72,7 @@ function compressPhoto(file) {
 }
 
 async function uploadPhoto(blob, phone) {
-    const path = phone + "-" + Date.now() + ".jpg";
+    const path = (window.crypto && crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2)) + ".jpg";
     const { error } = await db.storage
         .from(PHOTO_BUCKET)
         .upload(path, blob, { contentType: "image/jpeg", upsert: false });
