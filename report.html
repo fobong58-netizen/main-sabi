@@ -1,0 +1,48 @@
+<body class="page-report">
+...
+<main>
+    <div class="top-text">
+        <h1>Report a customer</h1>
+        <p>Only artisans can report. You can report a customer who contacted you through sabi. We read every report and may suspend the account.</p>
+    </div>
+    <div class="con">
+        <form class="card" id="report-form">
+            <div class="row-2">
+                <div class="field">
+                    <label for="my-phone">Your WhatsApp number</label>
+                    <input type="tel" id="my-phone" name="my_phone" placeholder="08012345678" inputmode="tel" pattern="(0|\+?234)[789][01][0-9]{8}" required>
+                </div>
+                <div class="field">
+                    <label for="my-pin">Your PIN</label>
+                    <input type="password" id="my-pin" name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="current-password" required>
+                </div>
+            </div>
+            <div class="field">
+                <label for="cust-phone">Customer's phone number</label>
+                <input type="tel" id="cust-phone" name="cust_phone" placeholder="08012345678" inputmode="tel" pattern="(0|\+?234)[789][01][0-9]{8}" required>
+                <p class="hint">The number the customer called or messaged you from.</p>
+            </div>
+            <div class="field">
+                <label for="reason">What happened?</label>
+                <select id="reason" name="reason" required>
+                    <option value="" disabled selected>Choose one</option>
+                    <option>Harassment</option>
+                    <option>Abuse or insults</option>
+                    <option>Fraud or scam</option>
+                    <option>Fake job or no-show</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <div class="field-work">
+                <label for="details">Details <span class="optional">(optional)</span></label>
+                <textarea id="details" name="details" rows="5" maxlength="600" placeholder="Tell us what happened and when."></textarea>
+            </div>
+            <p id="msg" class="msg" role="status"></p>
+            <button type="submit" class="submit-btn">Send report</button>
+        </form>
+    </div>
+</main>
+...
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/nav.js"></script>
+<script src="report.js"></script>
