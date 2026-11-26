@@ -207,7 +207,16 @@ form.addEventListener("submit", async function (event) {
         return;
     }
 
+    let listingNote = " Your profile is saved but customers cannot see it yet. Open My profile and pay \u20A61,000 to go live for a month and view jobs.";
+    try {
+        const { data: st } = await db.rpc("get_listing_status");
+        if (st && st.free) {
+            const until = new Date(st.free_until).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" });
+            listingNote = " Listing is free until " + until + ", so customers can find you now. After that it costs \u20A61,000 a month, paid on the My profile page, to stay listed and view jobs.";
+        }
+    } catch (e) {}
+
     form.reset();
     clearPhotoPreview();
-    showMessage("Your profile is created. Customers can now find you on the find a service page. Your recovery code is " + lastRecoveryCode + ". Write it down or take a screenshot now, because it is shown only once. You need it if you forget your PIN. Use the my profile page to edit your profile.", false);
+    showMessage("Your profile is created." + listingNote + " Your recovery code is " + lastRecoveryCode + ". Write it down or take a screenshot now, because it is shown only once. You need it if you forget your PIN. Use the my profile page to edit your profile.", false);
 });

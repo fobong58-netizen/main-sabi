@@ -80,3 +80,8 @@ input[type="password"]:focus-visible {
     border-radius: 10px;
     user-select: all;
 }
+/* ---------- Listing / payment box ---------- */
+.listing-box { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-radius: 10px; border-left: 4px solid var(--sun); background: var(--paper); }
+.listing-box.live { border-left-color: #0b6e44; background: #eefaf3; }
+.listing-box.hidden-profile { border-left-color: #b3261e; background: #fdf3f2; }
+.listing-box p { font-size: 0.95rem; }

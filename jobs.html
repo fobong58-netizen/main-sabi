@@ -35,10 +35,42 @@
     <main>
         <div class="top-text">
             <h1>Jobs in Port Harcourt</h1>
-            <p>Find work that matches your trade. Call or WhatsApp the person who posted the job.</p>
+            <p>Find work that matches your trade. Listed artisans can unlock jobs with their phone number and PIN, then call or WhatsApp the person who posted the job.</p>
             <a class="post-link" href="/post-job.html">Post a job</a>
         </div>
         <div class="con wide">
+            <form class="card" id="unlock-form">
+                <div class="profile-summary">
+                    <h2>View jobs</h2>
+                    <p class="hint">Enter the WhatsApp number and PIN you used to get listed. Jobs are for listed artisans.</p>
+                </div>
+                <div class="row-2">
+                    <div class="field">
+                        <label for="u-phone">Phone number (WhatsApp)</label>
+                        <input type="tel" id="u-phone" name="phone" placeholder="08012345678" autocomplete="tel" inputmode="tel" pattern="(0|\+?234)[789][01][0-9]{8}" title="Enter a valid Nigerian number, e.g. 08012345678" required>
+                    </div>
+                    <div class="field">
+                        <label for="u-pin">PIN</label>
+                        <input type="password" id="u-pin" name="pin" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="current-password" title="Your 6-digit PIN" required>
+                    </div>
+                </div>
+                <p id="unlock-msg" class="msg" role="status"></p>
+                <button type="submit" class="submit-btn">View jobs</button>
+                <a class="link-btn" href="/listed.html">Not listed yet? Get listed</a>
+            </form>
+
+            <div class="card is-hidden" id="unpaid-box">
+                <div class="profile-summary">
+                    <h2>Pay to view jobs</h2>
+                    <p>Your profile is saved, but it is not active right now (the free period has ended or your month is up). Pay &#8358;1,000 a month to be listed and view jobs.</p>
+                </div>
+                <div class="btn-row">
+                    <a class="post-link" href="/profile.html">Go to My profile to pay</a>
+                    <button type="button" class="ghost-btn" id="unpaid-signout">Sign out</button>
+                </div>
+            </div>
+
+            <div class="is-hidden" id="jobs-area">
             <form class="card" id="filters">
                 <div class="row-3">
                     <div class="field">
@@ -78,6 +110,8 @@
                 <h2 id="count">Jobs</h2>
             </div>
             <div class="job-list" id="jobs"></div>
+            <button type="button" class="link-btn" id="lock-jobs">Sign out of jobs</button>
+            </div>
         </div>
     </main>
 

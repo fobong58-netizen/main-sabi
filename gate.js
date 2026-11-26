@@ -14,6 +14,11 @@
         try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; }
     }
 
+    // artisan session (set on the jobs page after phone + PIN). Used to contact job posters.
+    function artisanSession() {
+        try { return JSON.parse(localStorage.getItem("sabi_artisan")); } catch (e) { return null; }
+    }
+
     function waDigits(phone) {
         const d = String(phone || "").replace(/\D/g, "");
         return d.startsWith("234") ? d : "234" + d.replace(/^0/, "");
@@ -53,43 +58,49 @@
         event.stopImmediatePropagation();
         if (link.dataset.busy) return;
 
-        const s = session();
-        if (!s || !s.token) {
-            notice("Sign in as a customer to contact artisans. It is free and keeps artisans safe.", true);
-            return;
-        }
-
         const isWhatsApp = link.classList.contains("wa-btn");
         const artisanId = link.dataset.contact;
         const jobId = link.dataset.job;
+
+        // job posters are contacted by listed artisans; artisans are contacted by signed-in customers
+        const s = jobId ? artisanSession() : session();
+        if (!s || !s.token) {
+            if (jobId) notice("Unlock the jobs page with your phone number and PIN to contact job posters.", false);
+            else notice("Sign in as a customer to contact artisans. It is free and keeps artisans safe.", true);
+            return;
+        }
 
         link.dataset.busy = "1";
         // open the tab now so popup blockers allow it; we point it at WhatsApp once the server says yes
         const tab = isWhatsApp ? window.open("", "_blank") : null;
 
-        const { data, error } = await client.rpc("reveal_contact", {
-            p_token: s.token,
-            p_target_type: artisanId ? "artisan" : "job",
-            p_target_id: Number(artisanId || jobId),
-            p_kind: isWhatsApp ? "whatsapp" : "call"
-        });
+        const kind = isWhatsApp ? "whatsapp" : "call";
+        const { data, error } = jobId
+            ? await client.rpc("reveal_job_contact", { p_token: s.token, p_job_id: Number(jobId), p_kind: kind })
+            : await client.rpc("reveal_contact", {
+                p_token: s.token,
+                p_target_type: "artisan",
+                p_target_id: Number(artisanId),
+                p_kind: kind
+            });
         delete link.dataset.busy;
 
         if (error || !data || !data.ok) {
             if (tab) tab.close();
             const reason = data && data.reason;
             if (reason === "nosession" || reason === "suspended") {
-                try { localStorage.removeItem(KEY); } catch (e) {}
+                try { localStorage.removeItem(jobId ? "sabi_artisan" : KEY); } catch (e) {}
             }
             const messages = {
                 nosession: "Your sign-in expired. Please sign in again.",
                 suspended: "Your account is suspended. Message us on WhatsApp if you think this is a mistake.",
                 limit: "You have reached today's contact limit. Try again tomorrow.",
-                notfound: "This listing is no longer available."
+                notfound: "This listing is no longer available.",
+                unpaid: "Pay the listing fee on My profile to contact job posters."
             };
             notice(error || !data ? "Could not reach the server. Check your internet and try again."
                                   : (messages[reason] || "This contact could not be made."),
-                   reason === "nosession");
+                   reason === "nosession" && !jobId);
             return;
         }
 

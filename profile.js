@@ -23,6 +23,9 @@ const photoInput = document.getElementById("photo");
 const photoPreview = document.getElementById("photo-preview");
 const introText = intro.textContent;
 
+// Your Paystack PUBLIC key (pk_test_... while testing, pk_live_... when real). Never put the secret key here.
+const PAYSTACK_PUBLIC_KEY = "pk_test_REPLACE_ME";
+
 // phone and PIN are kept only in memory while this page is open
 let session = null;
 
@@ -99,6 +102,9 @@ function showProfile(p) {
     editForm.about.value = p.about || "";
     photoInput.value = "";
     setPreview(p.photo_url && p.photo_url.indexOf("https://") === 0 ? p.photo_url : "");
+
+    showMessage(payMsg, "", false);
+    loadListing();
 
     intro.textContent = "Check your details and change anything that is out of date.";
     loginForm.classList.add("is-hidden");
@@ -295,4 +301,93 @@ document.getElementById("code-done").addEventListener("click", function () {
     codeValue.textContent = "";
     showOnly(loginForm);
     showMessage(loginMsg, "PIN saved. Log in with your new PIN.", false);
+});
+
+
+// ---------- listing fee (Paystack) ----------
+const listingBox = document.getElementById("listing-box");
+const listingText = document.getElementById("listing-text");
+const payBtn = document.getElementById("pay-btn");
+const payMsg = document.getElementById("pay-msg");
+
+function naira(kobo) { return "\u20A6" + (kobo / 100).toLocaleString("en-NG"); }
+function niceDate(iso) {
+    return new Date(iso).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" });
+}
+
+async function loadListing() {
+    if (!session) return;
+    listingBox.classList.add("is-hidden");
+    const { data, error } = await db.rpc("get_listing_state", { p_phone: session.phone, p_pin: session.pin });
+    if (error || !data || !data.ok) return;
+
+    const fee = naira(data.fee_kobo);
+    listingBox.classList.remove("is-hidden", "live", "hidden-profile");
+    payBtn.classList.add("is-hidden");
+
+    if (data.paid) {
+        listingBox.classList.add("live");
+        const daysLeft = Math.ceil((new Date(data.paid_until) - Date.now()) / 86400000);
+        listingText.textContent = "You are listed until " + niceDate(data.paid_until) + ". Renew before then to stay listed and keep viewing jobs.";
+        if (daysLeft <= 30) {
+            payBtn.textContent = "Renew for " + fee + " (adds 1 month)";
+            payBtn.classList.remove("is-hidden");
+        }
+    } else if (data.free) {
+        listingText.textContent = "Listing is free until " + niceDate(data.free_until) + ". After that it costs " + fee + " a month to stay listed and keep viewing jobs. If you pay now, your month starts after the free period, so nothing is wasted.";
+        payBtn.textContent = "Pay " + fee + " for 1 month";
+        payBtn.classList.remove("is-hidden");
+    } else {
+        listingBox.classList.add("hidden-profile");
+        listingText.textContent = (data.paid_until ? "Your listing expired on " + niceDate(data.paid_until) + ". " : "") +
+            "Your profile is saved but hidden from customers, and you cannot view jobs. Pay " + fee + " to go live for a month. Your details stay saved until you are ready.";
+        payBtn.textContent = "Pay " + fee + " to go live";
+        payBtn.classList.remove("is-hidden");
+    }
+    payBtn.dataset.fee = fee;
+}
+
+async function confirmPayment(reference) {
+    showMessage(payMsg, "Confirming your payment...", false);
+    const { data, error } = await db.functions.invoke("paystack", { body: { reference: reference } });
+    if (error || !data || !data.ok) {
+        console.error("Confirm failed:", error && error.message, data);
+        showMessage(payMsg, "We could not confirm your payment yet. If money left your account, wait a minute and refresh this page. Your profile goes live automatically once the payment is confirmed.", true);
+        payBtn.disabled = false;
+        return;
+    }
+    showMessage(payMsg, "Payment received. Thank you, you are now listed.", false);
+    payBtn.disabled = false;
+    loadListing();
+}
+
+payBtn.addEventListener("click", async function () {
+    if (!session) return;
+    if (typeof PaystackPop === "undefined") {
+        showMessage(payMsg, "Could not load the payment window. Check your internet and try again.", true);
+        return;
+    }
+    payBtn.disabled = true;
+    showMessage(payMsg, "Starting payment...", false);
+
+    const { data, error } = await db.rpc("start_payment", { p_phone: session.phone, p_pin: session.pin });
+    if (error || !data || !data.ok) {
+        payBtn.disabled = false;
+        if (data && data.reason === "already") { showMessage(payMsg, "You have already paid.", false); loadListing(); return; }
+        if (data && !data.ok && data.reason !== "already" && data.reason !== "error") { logout("Please log in again to pay."); return; }
+        showMessage(payMsg, "Could not start the payment. Check your internet and try again.", true);
+        return;
+    }
+    showMessage(payMsg, "", false);
+
+    const handler = PaystackPop.setup({
+        key: PAYSTACK_PUBLIC_KEY,
+        email: data.email,
+        amount: data.amount_kobo,
+        currency: "NGN",
+        ref: data.reference,
+        callback: function (response) { confirmPayment(response.reference); },
+        onClose: function () { payBtn.disabled = false; }
+    });
+    handler.openIframe();
 });

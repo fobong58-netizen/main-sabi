@@ -93,6 +93,11 @@
                     <span id="status-badge" class="badge"></span>
                     <p class="hint" id="wa-line"></p>
                 </div>
+                <div class="listing-box is-hidden" id="listing-box">
+                    <p id="listing-text"></p>
+                    <button type="button" class="submit-btn is-hidden" id="pay-btn">Pay</button>
+                    <p id="pay-msg" class="msg" role="status"></p>
+                </div>
                 <div class="field">
                     <label for="photo">Profile picture</label>
                     <div class="photo-row">
@@ -146,6 +151,7 @@
         <p>sabi | Skilled workers in Port Harcourt</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
     <script src="/nav.js"></script>
     <script src="profile.js"></script>
 </body>

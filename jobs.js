@@ -17,6 +17,12 @@ const closeModal = document.getElementById("closeModal");
 const closeForm = document.getElementById("close-form");
 const closeMsg = document.getElementById("close-msg");
 
+const AKEY = "sabi_artisan"; // { token, name } - shared with gate.js
+const unlockForm = document.getElementById("unlock-form");
+const unlockMsg = document.getElementById("unlock-msg");
+const unpaidBox = document.getElementById("unpaid-box");
+const jobsArea = document.getElementById("jobs-area");
+
 let allJobs = [];
 let closingId = null;
 
@@ -30,6 +36,17 @@ function escapeText(text) {
 function fillSelect(select, items, firstLabel) {
     select.innerHTML = "<option>" + firstLabel + "</option>" +
         items.map(function (item) { return "<option>" + escapeText(item) + "</option>"; }).join("");
+}
+
+function digitsOnly(phone) {
+    return phone.replace(/\D/g, "").replace(/^234/, "0");
+}
+
+function artisanSession() {
+    try { return JSON.parse(localStorage.getItem(AKEY)); } catch (e) { return null; }
+}
+function clearArtisanSession() {
+    try { localStorage.removeItem(AKEY); } catch (e) {}
 }
 
 function whatsappNumber(phone) {
@@ -50,13 +67,24 @@ function timeAgo(iso) {
 }
 
 // ---------- load ----------
+// returns { jobs } when allowed, { reason } when locked, null when the server could not be reached
 async function getJobs() {
-    const { data, error } = await db.rpc("get_job_list");
+    const s = artisanSession();
+    if (!s || !s.token) return { reason: "nosession" };
+    const { data, error } = await db.rpc("get_job_list", { p_token: s.token });
     if (error) {
         console.error("Could not load jobs:", error.message);
-        return null; // null = failed, [] = no jobs yet
+        return null;
     }
-    return data;
+    if (!Array.isArray(data)) return { reason: (data && data.reason) || "nosession" };
+    return { jobs: data };
+}
+
+// show only the right card: unlock form, pay prompt, or the jobs themselves
+function showState(state) {
+    unlockForm.classList.toggle("is-hidden", state !== "locked");
+    unpaidBox.classList.toggle("is-hidden", state !== "unpaid");
+    jobsArea.classList.toggle("is-hidden", state !== "open");
 }
 
 // ---------- build cards ----------
@@ -117,13 +145,20 @@ function showJobs() {
 async function loadAndShow() {
     countText.textContent = "Loading jobs...";
     list.innerHTML = "";
-    const jobs = await getJobs();
-    if (jobs === null) {
+    const res = await getJobs();
+    if (res === null) {
+        showState("open");
         countText.textContent = "Jobs";
         list.innerHTML = '<div class="empty"><h3>Could not load jobs</h3><p>Check your internet connection and refresh the page.</p></div>';
         return;
     }
-    allJobs = jobs;
+    if (res.reason) {
+        if (res.reason !== "unpaid") clearArtisanSession();
+        showState(res.reason === "unpaid" ? "unpaid" : "locked");
+        return;
+    }
+    showState("open");
+    allJobs = res.jobs;
     showJobs();
 }
 
@@ -185,6 +220,50 @@ closeForm.addEventListener("submit", async function (event) {
         return;
     }
     closeModal.close();
+    loadAndShow();
+});
+
+// ---------- unlock with phone + PIN ----------
+function signOut() {
+    clearArtisanSession();
+    allJobs = [];
+    showState("locked");
+}
+document.getElementById("lock-jobs").addEventListener("click", signOut);
+document.getElementById("unpaid-signout").addEventListener("click", signOut);
+
+unlockForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    const button = unlockForm.querySelector('button[type="submit"]');
+    button.disabled = true;
+    unlockMsg.textContent = "Checking...";
+    unlockMsg.className = "msg success";
+
+    const { data, error } = await db.rpc("artisan_login", {
+        p_phone: digitsOnly(unlockForm.phone.value),
+        p_pin: unlockForm.pin.value
+    });
+    button.disabled = false;
+
+    if (error || !data) {
+        unlockMsg.textContent = "Could not reach the server. Check your internet and try again.";
+        unlockMsg.className = "msg error";
+        return;
+    }
+    if (!data.ok) {
+        const reasons = {
+            locked: "Too many wrong tries. Wait 15 minutes and try again.",
+            nopin: "This profile has no PIN yet. Set one on the My profile page.",
+            invalid: "Wrong phone number or PIN. Not listed yet? Get listed first."
+        };
+        unlockMsg.textContent = reasons[data.reason] || reasons.invalid;
+        unlockMsg.className = "msg error";
+        return;
+    }
+    try { localStorage.setItem(AKEY, JSON.stringify({ token: data.token, name: data.name })); } catch (e) {}
+    unlockForm.reset();
+    unlockMsg.textContent = "";
+    unlockMsg.className = "msg";
     loadAndShow();
 });
 
